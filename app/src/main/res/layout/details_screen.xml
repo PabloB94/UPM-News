@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".DetailsScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/categoryShow"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:text="Technology" />
+
+    <TextView
+        android:id="@+id/titleShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/categoryShow"
+        android:text="Titulo del titular toh interesante para PMD" />
+
+    <TextView
+        android:id="@+id/subtitleShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleShow"
+        android:layout_marginTop="10dp"
+        android:text="Subtitulo explicativo de la noticia que se cuenta en este articulo, aunque aun no tengo ni idea de que va a poner en este apartado " />
+
+        <ImageView
+            android:id="@+id/imageShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subtitleShow"
+            tools:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/bodyShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageShow"
+        android:layout_marginBottom="5dp"
+        android:text="jnaifbianfonimaowdnjsknakjndwjkcadnkanfejdnsmnadwrfnvschnfknswkedjhsfnmvbcs ksj ncdmkjndhfvsinhacerfjhghbacnsjdjacvkubsegsajyhrcnhrkejxauncrvcytrsvcnhsaimckuecn" />
+
+    <TextView
+        android:id="@+id/footnoteNameShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bodyShow"
+        android:layout_toStartOf="@+id/footnoteDateShow"
+        android:layout_marginEnd="15dp"
+        android:text="Nombre del usuario que modifico" />
+
+    <TextView
+        android:id="@+id/footnoteDateShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bodyShow"
+        android:layout_alignParentEnd="true"
+        android:text="2020/20/20" />
+    </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

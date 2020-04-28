@@ -15,6 +15,12 @@ import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     
 	private static final String TAG = "LoadArticlesTask";
+
+	//hardcoded stored credentials
+    String strIdUser="";
+    String strApiKey="";
+    String strIdAuthUser="";
+    //////////////////////////////////////////////////////////////////////////////////
     
 	@Override
     protected List<Article> doInBackground(Void... voids) {
@@ -41,7 +47,7 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
                 res = ModelManager.getArticles(6, 0);
                 for (Article article : res) {
 					// We print articles in Log
-                    Log.i(TAG, article);
+                    Log.i(TAG, article.toString());/////////////////////////////////añadido toString, daba error
                 }
             } catch (ServerCommunicationError e) {
                 Log.e(TAG,e.getMessage());
