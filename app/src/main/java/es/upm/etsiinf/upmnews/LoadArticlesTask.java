@@ -20,7 +20,7 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     String strIdUser="";
     String strApiKey="";
     String strIdAuthUser="";
-    //////////////////////////////////////////////////////////////////////////////////
+
     
 	@Override
     protected List<Article> doInBackground(Void... voids) {
@@ -30,7 +30,10 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
 			// if it is the first login
             if (strIdUser==null || strIdUser.equals("")) {
                 try {
-                    ModelManager.login("ws_user", "ws_password");
+                    ModelManager.login("DEV_TEAM_02", "01394");
+                    strApiKey = ModelManager.getLoggedApiKey();
+                    strIdAuthUser = ModelManager.getLoggedAuthType();
+                    strIdUser = ModelManager.getLoggedIdUSer();
                 } catch (AuthenticationError e) {
                     Log.e(TAG, e.getMessage());
                 }

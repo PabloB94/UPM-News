@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -93,8 +94,7 @@ public class ServiceCallUtils {
 
     public static void writeJSONParams(HttpURLConnection connection, JSONObject json) throws IOException{
         // Send POST output.
-
-        DataOutputStream wr = new DataOutputStream(connection.getOutputStream ());
+        DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
         wr.writeBytes(json.toJSONString());//(URLEncoder.encode(json.toJSONString(),"UTF-8"));
         wr.flush();
         wr.close();
