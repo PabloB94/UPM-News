@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.Serializable;
+
+import es.upm.etsiinf.upmnews.model.Article;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -14,13 +18,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Test
         Button b = findViewById(R.id.btest);
         b.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent openSecondActivity = new Intent(MainActivity.this,DetailsScreen.class);
-                startActivity(openSecondActivity);
+                Intent testIntent = new Intent(MainActivity.this,DetailsScreen.class);
+                startActivity(testIntent);
             }
         });
     }

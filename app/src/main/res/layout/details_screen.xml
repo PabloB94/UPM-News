@@ -35,14 +35,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleShow"
-        android:layout_marginTop="10dp"
-        android:text="Subtitulo explicativo de la noticia que se cuenta en este articulo, aunque aun no tengo ni idea de que va a poner en este apartado " />
+        android:layout_marginTop="5dp"
+        android:text="Subtitulo explicativo de la noticia" />
 
+        <TextView
+            android:id="@+id/abstractShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subtitleShow"
+            android:layout_marginTop="10dp"
+            android:text="Resumen/Abstract de la noticia para leerla por encima" />
         <ImageView
             android:id="@+id/imageShow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/subtitleShow"
+            android:layout_below="@+id/abstractShow"
             tools:srcCompat="@drawable/ic_launcher_foreground" />
 
     <TextView
