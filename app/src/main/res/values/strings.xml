@@ -1,5 +1,25 @@
 <resources>
     <string name="app_name">UPM News</string>
+    <string name="create_article">Fill the form to create a new article</string>
+    <string name="edit_article">Edit the fields of the article</string>
+    <string name="title_label">Title: *</string>
+    <string name="hint_title">Write the title of your article</string>
+    <string name="subtitle_label">Subtitle: *</string>
+    <string name="hint_subtitle">Write the subtitle of your article</string>
+    <string name="category_label">Select your category *</string>
+    <string name="category_prompt">Choose one of the follow categories:</string>
+    <string name="cat1">National</string>
+    <string name="cat2">Economy</string>
+    <string name="cat3">Sports</string>
+    <string name="cat4">Technology</string>
+    <string name="abstract_label">Abstract: *</string>
+    <string name="hint_abstract">Write the abstract of your article</string>
+    <string name="body_label">Body of your article: *</string>
+    <string name="hint_body">Write your article</string>
+    <string name="hint_photo">example.png/example.jpg</string>
+    <string name="button_photo">Select your picture</string>
+    <string name="button_save">SAVE</string>
+    <string name="button_cancel">CANCEL</string>
     <string name="article_abstract">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lobortis nec sem et faucibus. Mauris eu consequat odio. Etiam imperdiet, leo quis viverra ultricies, augue est dictum nisl, in hendrerit dui felis sed arcu. Donec bibendum maximus nisi, a convallis augue hendrerit eget. Vestibulum ultricies diam sed ipsum condimentum, non vestibulum leo consectetur. Fusce condimentum nec leo at imperdiet. In lacinia, mauris sed suscipit pharetra, elit arcu efficitur sem, quis facilisis velit purus imperdiet dui. Duis aliquam congue hendrerit. Sed sagittis quam risus, ac hendrerit sem blandit quis. Donec lobortis eros felis, sed gravida nisi vulputate quis. Aliquam mattis arcu tortor, at varius neque hendrerit ut. </string>
     <string name="username">Username</string>
     <string name="enter_username">Enter your username...</string>
