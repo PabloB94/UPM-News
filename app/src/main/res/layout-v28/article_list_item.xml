@@ -12,15 +12,15 @@
 
         <TextView
             android:id="@+id/tituloArticulo"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="0dp"
             android:layout_weight="9"
             android:gravity="center_vertical"
-            android:maxLines="2"
-            android:text="Hola"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:text="Hola"
+            android:maxLines="2"
+            android:layout_width="0dp"
+            android:textFontWeight="bold"/>
 
         <TextView
             android:id="@+id/categoryTV"
@@ -44,21 +44,21 @@
         <ImageView
             android:id="@+id/articuloImageView"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
             android:layout_marginEnd="6dip"
             android:src="@drawable/ic_launcher_foreground"
-            android:layout_weight="5"
+            android:layout_weight="3"
             />
 
         <TextView
             android:id="@+id/abstractTV"
             android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="3dp"
-            android:layout_weight="7"
+            android:layout_height="80dp"
             android:maxLines="5"
+            android:layout_marginTop="3dp"
             android:text="@string/article_abstract"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:layout_weight="9" />
 
     </LinearLayout>
 
