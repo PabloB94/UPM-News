@@ -3,11 +3,14 @@ package es.upm.etsiinf.upmnews;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Properties;
 
 import es.upm.etsiinf.upmnews.model.Article;
+import es.upm.etsiinf.upmnews.utils.AdaptadorListaArticulos;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.RESTConnection;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.AuthenticationError;
@@ -21,8 +24,15 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     String strApiKey="";
     String strIdAuthUser="";
 
-    
-	@Override
+
+    public AsyncResponse delegate = null;
+    private MainActivity context;
+    public LoadArticlesTask(MainActivity context){
+        this.context = context;
+    }
+
+
+    @Override
     protected List<Article> doInBackground(Void... voids) {
         List<Article> res = null;
 		//ModelManager uses singleton pattern, connecting once per app execution in enough
@@ -58,4 +68,17 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
         }
         return res;
     }
+
+    @Override
+    public void onPostExecute(List<Article> res){
+        ListView listaArticulosView  = context.findViewById(R.id.listaArticulos);
+        AdaptadorListaArticulos adaptador = new AdaptadorListaArticulos(context,res);
+        listaArticulosView.setAdapter(adaptador);
+        int duration = Toast.LENGTH_SHORT;
+        CharSequence text = "Hola";
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+        delegate.processFinish(res);
+    }
+
 }
