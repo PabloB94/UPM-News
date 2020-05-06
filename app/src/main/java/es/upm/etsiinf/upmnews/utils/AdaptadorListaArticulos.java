@@ -1,6 +1,7 @@
 package es.upm.etsiinf.upmnews.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -9,12 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
+import es.upm.etsiinf.upmnews.DetailsScreen;
+import es.upm.etsiinf.upmnews.MainActivity;
 import es.upm.etsiinf.upmnews.R;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
@@ -51,6 +55,13 @@ public class AdaptadorListaArticulos extends BaseAdapter {
             String imgbase64 = img.getImage();
             byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            int width = decodedByte.getWidth();
+            int height = decodedByte.getHeight();
+            if(height > width){
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) image.getLayoutParams();
+                params.weight = 2.0f;
+                image.setLayoutParams(params);
+            }
             image.setImageBitmap(decodedByte);
         } catch (ServerCommunicationError serverCommunicationError) {
             serverCommunicationError.printStackTrace();
@@ -65,6 +76,9 @@ public class AdaptadorListaArticulos extends BaseAdapter {
                 CharSequence text = v.getTag().toString();
                 Toast toast = Toast.makeText(contexto, text, duration);
                 toast.show();
+                Intent detalleArticulo = new Intent(contexto, DetailsScreen.class);
+                detalleArticulo.putExtra( "id", text);
+                contexto.startActivity(detalleArticulo);
             }
         });
 

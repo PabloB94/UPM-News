@@ -1,25 +1,24 @@
 package es.upm.etsiinf.upmnews;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.SerializationUtils;
-import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
 public class DetailsScreen extends AppCompatActivity {
     private Article current;
+    private String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_screen);
         Intent in = getIntent();
+        id = in.getStringExtra("id");
         //current =(Article) in.getSerializableExtra("Article");//pass the article in intent extras, check this out
     }
 
