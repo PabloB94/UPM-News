@@ -74,10 +74,6 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
         ListView listaArticulosView  = context.findViewById(R.id.listaArticulos);
         AdaptadorListaArticulos adaptador = new AdaptadorListaArticulos(context,res);
         listaArticulosView.setAdapter(adaptador);
-        int duration = Toast.LENGTH_SHORT;
-        CharSequence text = "Hola";
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
         delegate.processFinish(res);
     }
 

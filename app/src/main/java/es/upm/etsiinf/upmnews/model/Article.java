@@ -136,7 +136,7 @@ public class Article extends ModelEntity {
 				+", titleText=" + titleText  
 				+", abstractText=" + abstractText 
 				+  ", bodyText="	+ bodyText + ", subtitleText=" + subtitle
-				//+ ", publicationDate=" + Utils.dateToString(publicationDate) 
+				+ ", lastUpdate=" + SerializationUtils.dateToString(lastUpdate)
 				+", image_description=" + imageDescription
 				+", image_data=" + mainImage
 				+", thumbnail=" + thumbnail 
@@ -160,7 +160,7 @@ public class Article extends ModelEntity {
 		else if (imageDescription!=null && !imageDescription.isEmpty())
 			res.put("image_description", imageDescription);
 
-		//res.put("publication_date", publicationDate==null?null:Utils.dateToString(publicationDate));
+		res.put("lastUpdate", lastUpdate==null?null:SerializationUtils.dateToString(lastUpdate));
 		return res;
 	}
 }
