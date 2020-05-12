@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">UPM News</string>
     <string name="article_abstract">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lobortis nec sem et faucibus. Mauris eu consequat odio. Etiam imperdiet, leo quis viverra ultricies, augue est dictum nisl, in hendrerit dui felis sed arcu. Donec bibendum maximus nisi, a convallis augue hendrerit eget. Vestibulum ultricies diam sed ipsum condimentum, non vestibulum leo consectetur. Fusce condimentum nec leo at imperdiet. In lacinia, mauris sed suscipit pharetra, elit arcu efficitur sem, quis facilisis velit purus imperdiet dui. Duis aliquam congue hendrerit. Sed sagittis quam risus, ac hendrerit sem blandit quis. Donec lobortis eros felis, sed gravida nisi vulputate quis. Aliquam mattis arcu tortor, at varius neque hendrerit ut. </string>
+    <string name="username">Username</string>
+    <string name="enter_username">Enter your username...</string>
+    <string name="password">Password</string>
+    <string name="enter_password">Enter your password...</string>
+    <string name="login">Login</string>
+    <string name="cancel">Cancel</string>
 </resources>

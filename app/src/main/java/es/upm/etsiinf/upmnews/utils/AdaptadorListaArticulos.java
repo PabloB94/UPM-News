@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.Html;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,23 +47,25 @@ public class AdaptadorListaArticulos extends BaseAdapter {
         TextView titulo = (TextView) view.findViewById(R.id.tituloArticulo);
         titulo.setText(this.datos.get(i).getTitleText());
         TextView resumen = (TextView) view.findViewById(R.id.abstractTV);
-        resumen.setText(this.datos.get(i).getAbstractText());
+        resumen.setText(Html.fromHtml(this.datos.get(i).getAbstractText(),Html.FROM_HTML_MODE_COMPACT));
         TextView categoria = (TextView) view.findViewById(R.id.categoryTV);
         categoria.setText(this.datos.get(i).getCategory());
         try {
             ImageView image = (ImageView) view.findViewById(R.id.articuloImageView);;
             Image img = this.datos.get(i).getImage();
-            String imgbase64 = img.getImage();
-            byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            int width = decodedByte.getWidth();
-            int height = decodedByte.getHeight();
-            if(height > width){
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) image.getLayoutParams();
-                params.weight = 2.0f;
-                image.setLayoutParams(params);
+            if (img != null) {
+                String imgbase64 = img.getImage();
+                byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                int width = decodedByte.getWidth();
+                int height = decodedByte.getHeight();
+                if(height > width){
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) image.getLayoutParams();
+                    params.weight = 2.0f;
+                    image.setLayoutParams(params);
+                }
+                image.setImageBitmap(decodedByte);
             }
-            image.setImageBitmap(decodedByte);
         } catch (ServerCommunicationError serverCommunicationError) {
             serverCommunicationError.printStackTrace();
         }
