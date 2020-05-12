@@ -9,6 +9,7 @@ import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
 public class UploadArticleTask extends AsyncTask<Void, Void, Integer> {
+    
     private Article upload;
     private EditCreateForm context;
 
