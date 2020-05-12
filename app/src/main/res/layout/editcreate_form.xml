@@ -67,6 +67,7 @@
             android:layout_height="wrap_content"
             android:dropDownWidth="wrap_content"
             android:entries="@array/catSelector"
+            android:spinnerMode="dialog"
             android:prompt="@string/category_label"
             android:layout_marginTop="10dp"/>
 

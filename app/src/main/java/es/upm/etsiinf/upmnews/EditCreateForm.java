@@ -1,32 +1,45 @@
 package es.upm.etsiinf.upmnews;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import es.upm.etsiinf.upmnews.model.Article;
+import es.upm.etsiinf.upmnews.model.Image;
+import es.upm.etsiinf.upmnews.utils.network.ModelManager;
+import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
+
 public class EditCreateForm extends AppCompatActivity {
     private static final int SELECT_PHOTO = 1;
+    private Article upload;
+    private Image artImg=null;
+    private String title;
+    private String subtitle;
+    private String resume;
+    private String body;
+    private String category;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editcreate_form);
-        Intent in = getIntent();
-        //al darle a guardar tiene que salir mensaje de confirmación y meter obligacion * en codigo
         Button bpic = findViewById(R.id.buttonPhoto);
         bpic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +54,51 @@ public class EditCreateForm extends AppCompatActivity {
             }
         });
 
+        Button bcancel = findViewById(R.id.buttonCancel);
+        bcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        Button bsave = findViewById(R.id.buttonSave);
+        bsave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!checkFields()){
+                    AlertDialog.Builder mandatory = new AlertDialog.Builder(EditCreateForm.this);
+                    mandatory.setTitle("All fields marked with * are mandatory");
+                    mandatory.setMessage("Please complete all the required fields to proceed");
+                    mandatory.setPositiveButton("OK",null);
+                    AlertDialog alert = mandatory.create();
+                    alert.show();
+                }else{
+                    if(true){
+                        AlertDialog.Builder ok = new AlertDialog.Builder(EditCreateForm.this);
+                        ok.setTitle("Your article was saved successfully");
+                        ok.setMessage("Your article has been saved and uploaded to our servers");
+                        ok.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                onBackPressed();
+                            }
+                        });
+                        AlertDialog okMessage = ok.create();
+                        okMessage.show();
+                    }else{
+                        AlertDialog.Builder fail = new AlertDialog.Builder(EditCreateForm.this);
+                        fail.setTitle("Error communicating with the server, operation failed");
+                        fail.setMessage("Due to an internal error the operation was cancelled");
+                        fail.setPositiveButton("Ok",null);
+                        AlertDialog alert = fail.create();
+                        alert.show();
+                    }
+                }
+            }
+        });
     }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -71,6 +128,29 @@ public class EditCreateForm extends AppCompatActivity {
                 }else{}
 
         }
+    }
+
+    private boolean checkFields(){
+        boolean res =true;
+        title = ((EditText)findViewById(R.id.newTitle)).getText().toString();
+        subtitle = ((EditText)findViewById(R.id.newSubtitle)).getText().toString();
+        resume = ((EditText)findViewById(R.id.newAbstract)).getText().toString();
+        body = ((EditText)findViewById(R.id.newBody)).getText().toString();
+        Spinner cat = findViewById(R.id.selectCategory);
+        category = (String)cat.getItemAtPosition(cat.getSelectedItemPosition());
+        if(title.isEmpty() || subtitle.isEmpty() || resume.isEmpty() || body.isEmpty() || category.isEmpty()){
+            res = false;
+        }
+        return res;
+    }
+
+    //al volver a la pantalla principal hay que refrescar la lista de articulos
+    private boolean saveArticle(){
+        boolean res=true;
+            upload = new Article(category,title, resume,body,subtitle,ModelManager.getIdUser());
+            UploadArticleTask task = new UploadArticleTask(this,upload);
+            //debemos setId del articulo creado,
+        return res;
     }
 
     @Override

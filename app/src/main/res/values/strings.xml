@@ -8,6 +8,7 @@
     <string name="hint_subtitle">Write the subtitle of your article</string>
     <string name="category_label">Select your category *</string>
     <string name="category_prompt">Choose one of the follow categories:</string>
+    <string name="cat_default"></string>
     <string name="cat1">National</string>
     <string name="cat2">Economy</string>
     <string name="cat3">Sports</string>
