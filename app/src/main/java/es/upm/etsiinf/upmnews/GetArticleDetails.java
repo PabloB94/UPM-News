@@ -11,7 +11,6 @@ import static es.upm.etsiinf.upmnews.utils.Logger.TAG;
 
 public class GetArticleDetails extends AsyncTask<Void, Void, Article> {
 
-    AsyncResponse delegate = null;
     private DetailsScreen context;
     private String id;
 

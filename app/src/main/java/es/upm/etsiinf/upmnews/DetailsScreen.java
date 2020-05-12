@@ -20,7 +20,7 @@ import es.upm.etsiinf.upmnews.model.Image;
 import es.upm.etsiinf.upmnews.utils.SerializationUtils;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
-public class DetailsScreen extends AppCompatActivity implements AsyncResponse {
+public class DetailsScreen extends AppCompatActivity{
     private String id;
     private Article current;
     @Override
@@ -30,7 +30,6 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse {
         Intent in = getIntent();
         id = in.getStringExtra("id");
         GetArticleDetails task = new GetArticleDetails(this,id);
-        task.delegate = this;
         task.execute();
     }
 
@@ -72,9 +71,5 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse {
         }
     }
 
-    @Override
-    public void processFinish(List<Article> output) {
-            current=output.get(0);
-    }
 }
 

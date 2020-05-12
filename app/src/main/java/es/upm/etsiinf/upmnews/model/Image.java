@@ -67,7 +67,7 @@ public class Image extends ModelEntity {
 	 * @return
 	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 	/**
 	 * 

@@ -5,37 +5,40 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 import es.upm.etsiinf.upmnews.model.Article;
-import es.upm.etsiinf.upmnews.model.Image;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
-import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
 public class EditCreateForm extends AppCompatActivity {
     private static final int SELECT_PHOTO = 1;
     private Article upload;
-    private Image artImg=null;
     private String title;
     private String subtitle;
     private String resume;
     private String body;
     private String category;
+    private String articleImage="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,25 +77,7 @@ public class EditCreateForm extends AppCompatActivity {
                     AlertDialog alert = mandatory.create();
                     alert.show();
                 }else{
-                    if(true){
-                        AlertDialog.Builder ok = new AlertDialog.Builder(EditCreateForm.this);
-                        ok.setTitle("Your article was saved successfully");
-                        ok.setMessage("Your article has been saved and uploaded to our servers");
-                        ok.setPositiveButton("OK",new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                onBackPressed();
-                            }
-                        });
-                        AlertDialog okMessage = ok.create();
-                        okMessage.show();
-                    }else{
-                        AlertDialog.Builder fail = new AlertDialog.Builder(EditCreateForm.this);
-                        fail.setTitle("Error communicating with the server, operation failed");
-                        fail.setMessage("Due to an internal error the operation was cancelled");
-                        fail.setPositiveButton("Ok",null);
-                        AlertDialog alert = fail.create();
-                        alert.show();
-                    }
+                    saveArticle();
                 }
             }
         });
@@ -108,20 +93,20 @@ public class EditCreateForm extends AppCompatActivity {
                     InputStream stream = null;
                     try {
                         stream = getContentResolver().openInputStream(data.getData());
-                        Uri photoLink = data.getData();
-                        Cursor retcursor = getContentResolver().query(photoLink, null, null, null, null);
-                        int nameIndex = retcursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                        TextView namephoto = findViewById(R.id.photoLabel);
-                        String nombre = retcursor.getString(nameIndex);
-                        namephoto.setText(nombre);
+                        Bitmap bitmap = BitmapFactory.decodeStream(stream);
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream .toByteArray();
+                        articleImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        ((ImageView)findViewById(R.id.imageShow)).setImageBitmap(bitmap);
                     } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        Log.i("EditCreateForm",e.getMessage());
                     } finally {
                         if (stream != null) {
                             try {
                                 stream.close();
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                Log.i("EditCreateForm",e.getMessage());
                             }
                         }
                     }
@@ -144,13 +129,36 @@ public class EditCreateForm extends AppCompatActivity {
         return res;
     }
 
-    //al volver a la pantalla principal hay que refrescar la lista de articulos
-    private boolean saveArticle(){
-        boolean res=true;
-            upload = new Article(category,title, resume,body,subtitle,ModelManager.getIdUser());
-            UploadArticleTask task = new UploadArticleTask(this,upload);
-            //debemos setId del articulo creado,
-        return res;
+    private void saveArticle(){
+        upload = new Article(category,title, resume,body,subtitle,ModelManager.getIdUser());
+        if(!articleImage.isEmpty()){
+            upload.addImage(articleImage,"Imagen chula del articulo");
+        }
+        UploadArticleTask task = new UploadArticleTask(this,upload);
+        task.execute();
+        //debemos setId del articulo creado
+    }
+
+    public void saveOk(){
+        AlertDialog.Builder ok = new AlertDialog.Builder(EditCreateForm.this);
+        ok.setTitle("Your article was saved successfully");
+        ok.setMessage("Your article has been saved and uploaded to our servers");
+        ok.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                onBackPressed();
+            }
+        });
+        AlertDialog okMessage = ok.create();
+        okMessage.show();
+    }
+
+    public void saveFail(){
+        AlertDialog.Builder ok = new AlertDialog.Builder(EditCreateForm.this);
+        ok.setTitle("Error uploading your article");
+        ok.setMessage("Sorry for the inconveniences");
+        ok.setPositiveButton("OK",null);
+        AlertDialog okMessage = ok.create();
+        okMessage.show();
     }
 
     @Override

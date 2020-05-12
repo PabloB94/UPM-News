@@ -3,13 +3,12 @@ package es.upm.etsiinf.upmnews;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import es.upm.etsiinf.upmnews.EditCreateForm;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
-public class UploadArticleTask extends AsyncTask<Void, Void, Integer> {
-    
+public class UploadArticleTask extends AsyncTask<Void, Void, Boolean> {
+
     private Article upload;
     private EditCreateForm context;
 
@@ -19,17 +18,22 @@ public class UploadArticleTask extends AsyncTask<Void, Void, Integer> {
     }
 
     @Override
-    protected Integer doInBackground(Void... voids) {
-        int res=-1;
+    protected Boolean doInBackground(Void... voids) {
+        boolean res= true;
         try {
-            res = ModelManager.saveArticle(upload);
+            int id = ModelManager.saveArticle(upload);
         } catch (ServerCommunicationError e) {
-            Log.i("EditCreateForm",e.getMessage());
+            res=false;
+            Log.i("UploadArticleTask",e.getMessage());
         }
         return res;
     }
     @Override
-    public void onPostExecute(int res){
-
+    public void onPostExecute(Boolean res){
+        if(res){
+            context.saveOk();
+        }else{
+            context.saveFail();
+        }
     }
     }
