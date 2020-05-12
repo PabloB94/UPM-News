@@ -37,9 +37,6 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse {
     @Override
     protected void onResume() {
         super.onResume();
-        String textazo="Las respuestas que te dieron son válidas. Lo que si me gustaría agregar es que quizás debas analizar utilizar fragmentos, son menos costosos y te dan una UI fluida. Por otra parte es a lo que Android apunta a con jetpack hoy, 1 actividad simple que solo inicia un navigator y después las vistas en fragmentos. Los pases entre vistas se hacen mucho más fluidos (cada actividad tiene un set de recursos asociados que deben cargarse al iniciar, el fragmento trabaja sobre una actividad)Las respuestas que te dieron son válidas. Lo que si me gustaría agregar es que quizás debas analizar utilizar fragmentos, son menos costosos y te dan una UI fluida. Por otra parte es a lo que Android apunta a con jetpack hoy, 1 actividad simple que solo inicia un navigator y después las vistas en fragmentos. Los pases entre vistas se hacen mucho más fluidos (cada actividad tiene un set de recursos asociados que deben cargarse al iniciar, el fragmento trabaja sobre una actividad)Las respuestas que te dieron son válidas. Lo que si me gustaría agregar es que quizás debas analizar utilizar fragmentos, son menos costosos y te dan una UI fluida. Por otra parte es a lo que Android apunta a con jetpack hoy, 1 actividad simple que solo inicia un navigator y después las vistas en fragmentos. Los pases entre vistas se hacen mucho más fluidos (cada actividad tiene un set de recursos asociados que deben cargarse al iniciar, el fragmento trabaja sobre una actividad)";
-        Article ejemplo = new Article("Technology","Articulo de prueba del metodo load","Esto es el resumen del articulo que es muy interesante",textazo,"Subtitulo de la noticia de prueba bro","01");
-        //loadElements(current);
     }
 
     public void loadElements(Article load){
