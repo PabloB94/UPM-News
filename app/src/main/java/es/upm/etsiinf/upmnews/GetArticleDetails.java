@@ -61,10 +61,5 @@ public class GetArticleDetails extends AsyncTask<Void, Void, Article> {
     }
 
     @Override
-    public void onPostExecute(Article res){
-            context.loadElements(res);
-            //porque no mejor en el onclicklistener le pasamos un articulo de la lista
-            //mainactivity para que sirve el processfinish
-            //porque implementa asyncresponse sino lo usa
-    }
+    public void onPostExecute(Article res){context.loadElements(res);}
 }

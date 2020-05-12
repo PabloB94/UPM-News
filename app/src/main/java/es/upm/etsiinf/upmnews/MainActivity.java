@@ -1,10 +1,5 @@
 package es.upm.etsiinf.upmnews;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
 
 import java.util.List;
 import java.util.Properties;
@@ -14,7 +9,6 @@ import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
-    ListView listaArticulosView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +27,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(List<Article> output) {
-       /* int duration = Toast.LENGTH_SHORT;
-        CharSequence text = "Hola";
-        Toast toast = Toast.makeText(this, text, duration);
-        toast.show();*/
-    }
+    public void processFinish(List<Article> output) {}
 
 
 }
