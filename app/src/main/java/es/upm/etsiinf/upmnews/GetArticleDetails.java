@@ -3,9 +3,6 @@ package es.upm.etsiinf.upmnews;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.AuthenticationError;

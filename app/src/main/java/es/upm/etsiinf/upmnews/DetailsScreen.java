@@ -66,13 +66,10 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse {
                 byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 img.setImageBitmap(decodedByte);
-            }else{
-                img.setImageResource(R.drawable.ic_launcher_foreground);
             }
             body.setText(Html.fromHtml(elems.get("body"),Html.FROM_HTML_MODE_COMPACT));
             userUpdate.setText(Integer.toString(load.getIdUser()));
             dateUpdate.setText(elems.get("lastUpdate"));
-            //////////////////////////////////////////la fecha de update no tiene get
         }catch(Exception e){
             Log.i("DetailsScreen",e.getMessage());
         }
