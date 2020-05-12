@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/background"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -57,7 +56,7 @@
             android:layout_gravity="center">
 
             <Button
-                android:id="@+id/cancelButton"
+                android:id="@+id/cancelDialogButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dip"
@@ -65,11 +64,12 @@
                 />
 
             <Button
-                android:id="@+id/loginButton"
+                android:id="@+id/loginDialogButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dip"
                 android:text="@string/login"
+                android:onClick="login"
                 />
 
         </LinearLayout>
