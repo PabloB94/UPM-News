@@ -37,12 +37,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(List<Article> output) {
-       /* int duration = Toast.LENGTH_SHORT;
-        CharSequence text = "Hola";
-        Toast toast = Toast.makeText(this, text, duration);
-        toast.show();*/
-    }
+    public void processFinish(List<Article> output) {}
 
     public void callLoginDialog(View view)
     {
