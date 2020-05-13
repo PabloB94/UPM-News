@@ -1,13 +1,16 @@
 package es.upm.etsiinf.upmnews;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import java.util.Properties;
 
@@ -19,7 +22,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     Context context = this;
     Boolean guardar = false;
     MainActivity main = this;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,40 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     public void deleteArticle(View view){
+        AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(context);
 
+// Setting Dialog Title
+        alertDialog2.setTitle("Confirm Delete");
+
+// Setting Dialog Message
+        alertDialog2.setMessage("Are you sure you want delete this article?");
+
+// Setting Icon to Dialog
+        alertDialog2.setIcon(R.drawable.delete);
+
+// Setting Positive "Yes" Btn
+        alertDialog2.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+                        Toast.makeText(getApplicationContext(),
+                                "You clicked on Yes", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+// Setting Negative "NO" Btn
+        alertDialog2.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+                        Toast.makeText(getApplicationContext(),
+                                "You clicked on No", Toast.LENGTH_SHORT)
+                                .show();
+                        dialog.cancel();
+                    }
+                });
+
+// Showing Alert Dialog
+        alertDialog2.show();
     }
 }
