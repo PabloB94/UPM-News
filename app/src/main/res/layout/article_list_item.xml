@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -62,4 +63,36 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/extraButtons"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/editArticleButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_toStartOf="@+id/deleteArticleButton"
+            android:background="@drawable/drawable_pencil"
+            android:clickable="true"
+            android:src="@drawable/pencil"
+            android:onClick="editArticle"
+            app:layout_constraintEnd_toEndOf="@id/deleteArticleButton" />
+
+        <Button
+            android:id="@+id/deleteArticleButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/drawable_trash"
+            android:clickable="true"
+            android:src="@drawable/delete"
+            android:onClick="deleteArticle"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="5dp"/>
+    </RelativeLayout>
 </LinearLayout>

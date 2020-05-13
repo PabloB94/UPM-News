@@ -87,6 +87,7 @@ public class LoginTask extends AsyncTask<Void, Void, Boolean> {
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
         myDialog.cancel();
+        delegate.processFinish(success);
     }
 
 }

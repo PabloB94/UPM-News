@@ -19,10 +19,11 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
 
 
 
-
-    public AsyncResponse delegate = null;
+    AsyncResponse delegate = null;
     private MainActivity context;
-    public LoadArticlesTask(MainActivity context){
+    Boolean loggedin = false;
+
+    LoadArticlesTask(MainActivity context){
         this.context = context;
     }
 
@@ -30,6 +31,10 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     @Override
     protected List<Article> doInBackground(Void... voids) {
         List<Article> res = null;
+
+        //If connection has been successful
+
+
         try {
             //AQUI HABRIA QUE EXTRAER DE LA STORED  EL USER Y LA PASSWORD Y COMPROBAR SI ES NULL O NO
             String strIdUser = "";
@@ -63,9 +68,8 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     @Override
     public void onPostExecute(List<Article> res){
         ListView listaArticulosView  = context.findViewById(R.id.listaArticulos);
-        AdaptadorListaArticulos adaptador = new AdaptadorListaArticulos(context,res);
+        AdaptadorListaArticulos adaptador = new AdaptadorListaArticulos(context,res,loggedin);
         listaArticulosView.setAdapter(adaptador);
-        delegate.processFinish(res);
     }
 
 }

@@ -13,12 +13,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Hashtable;
-import java.util.List;
 
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
-import es.upm.etsiinf.upmnews.utils.SerializationUtils;
-import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
 public class DetailsScreen extends AppCompatActivity implements AsyncResponse {
     private String id;
@@ -73,8 +70,8 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(List<Article> output) {
-            current=output.get(0);
+    public void processFinish(Boolean output) {
+//            current=output.get(0);
     }
 }
 
