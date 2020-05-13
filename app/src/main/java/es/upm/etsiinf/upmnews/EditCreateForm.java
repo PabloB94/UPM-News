@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,11 +23,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import es.upm.etsiinf.upmnews.model.Article;
+import es.upm.etsiinf.upmnews.model.Image;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
-public class EditCreateForm extends AppCompatActivity {
+public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
     private static final int SELECT_PHOTO = 1;
     private String title;
     private String subtitle;
@@ -34,11 +37,18 @@ public class EditCreateForm extends AppCompatActivity {
     private String body;
     private String category;
     private String articleImage="";
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editcreate_form);
+        Intent in = getIntent();
+        String inId = in.getStringExtra("id");
+        id = Integer.parseInt(inId);
+        //if id>=0 load data to edit
+        if(id>=0){ getData(inId);}
+        //button to select a picture from the phone gallery
         Button bpic = findViewById(R.id.buttonPhoto);
         bpic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +63,7 @@ public class EditCreateForm extends AppCompatActivity {
             }
         });
 
+        //button to cancel the action and go back to the previous screen
         Button bcancel = findViewById(R.id.buttonCancel);
         bcancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +72,7 @@ public class EditCreateForm extends AppCompatActivity {
             }
         });
 
+        //button that checks all the mandatory fields and uploads the article to the server
         Button bsave = findViewById(R.id.buttonSave);
         bsave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +89,7 @@ public class EditCreateForm extends AppCompatActivity {
                 }
             }
         });
+
     }
 
 
@@ -122,12 +135,16 @@ public class EditCreateForm extends AppCompatActivity {
     }
 
     private void saveArticle(){
-       Article upload = new Article(category,title, resume,body,subtitle,ModelManager.getIdUser());
-        if(!articleImage.isEmpty()){
-            upload.addImage(articleImage,"Imagen chula del articulo");
-        }
-        UploadArticleTask task = new UploadArticleTask(this,upload);
-        task.execute();
+            Article upload = new Article(category,title, resume,body,subtitle,ModelManager.getIdUser());
+            if(!articleImage.isEmpty()){
+                upload.addImage(articleImage,"Imagen chula del articulo");
+            }
+            if(id>=0){
+                upload.setId(id);
+            }
+            UploadArticleTask task = new UploadArticleTask(this,upload);
+            task.execute();
+
     }
 
     public void saveOk(){
@@ -152,8 +169,43 @@ public class EditCreateForm extends AppCompatActivity {
         okMessage.show();
     }
 
+    private void getData(String id){
+        GetArticleDetails task = new GetArticleDetails(this,id);
+        task.execute();
+    }
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void processFinish(List<Article> output) {
+        Article loaded = output.get(0);
+        EditText title =findViewById(R.id.newTitle);
+        EditText subtitle =findViewById(R.id.newSubtitle);
+        EditText resume =findViewById(R.id.newAbstract);
+        EditText body =findViewById(R.id.newBody);
+        Spinner cat = findViewById(R.id.selectCategory);
+        ImageView photo =findViewById(R.id.imageShow);
+
+        title.setText(loaded.getTitleText(), TextView.BufferType.EDITABLE);
+        subtitle.setText(loaded.getSubtitleText(),TextView.BufferType.EDITABLE);
+        resume.setText(loaded.getAbstractText(),TextView.BufferType.EDITABLE);
+        body.setText(loaded.getBodyText(),TextView.BufferType.EDITABLE);
+        cat.setSelection(getIndex(cat,loaded.getCategory()));
+        Image img = loaded.getImage();
+        if(img!=null){
+            photo.setImageBitmap(getPhoto(img));
+        }
+    }
+
+    private int getIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private Bitmap getPhoto(Image img){
+        String imgbase64 = img.getImage();
+        byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 }

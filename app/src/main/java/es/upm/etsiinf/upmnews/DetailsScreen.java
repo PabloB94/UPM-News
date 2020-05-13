@@ -20,9 +20,8 @@ import es.upm.etsiinf.upmnews.model.Image;
 import es.upm.etsiinf.upmnews.utils.SerializationUtils;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
-public class DetailsScreen extends AppCompatActivity{
+public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
     private String id;
-    private Article current;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,5 +70,9 @@ public class DetailsScreen extends AppCompatActivity{
         }
     }
 
+    @Override
+    public void processFinish(List<Article> output) {
+        loadElements(output.get(0));
+    }
 }
 

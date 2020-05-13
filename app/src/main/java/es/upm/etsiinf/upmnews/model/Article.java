@@ -12,7 +12,7 @@ import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
 
 public class Article extends ModelEntity {
-	
+
 	private String titleText;
 	private String category;
 	private String abstractText;

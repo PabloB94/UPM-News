@@ -3,6 +3,9 @@ package es.upm.etsiinf.upmnews;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
@@ -11,10 +14,10 @@ import static es.upm.etsiinf.upmnews.utils.Logger.TAG;
 
 public class GetArticleDetails extends AsyncTask<Void, Void, Article> {
 
-    private DetailsScreen context;
+    private AsyncResponse context;
     private String id;
 
-    GetArticleDetails(DetailsScreen cont, String id_art){
+    GetArticleDetails(AsyncResponse cont, String id_art){
         this.context = cont;
         this.id = id_art;
     }
@@ -34,5 +37,7 @@ public class GetArticleDetails extends AsyncTask<Void, Void, Article> {
 
     @Override
     public void onPostExecute(Article res){
-        context.loadElements(res);}
+        List<Article> sol = new ArrayList<>();
+        sol.add(res);
+        context.processFinish(sol);}
 }

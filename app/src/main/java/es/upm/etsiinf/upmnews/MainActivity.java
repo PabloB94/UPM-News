@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             public void onClick(View v){
                 myDialog.cancel();
                 Intent testIntent = new Intent(MainActivity.this,EditCreateForm.class);
+                testIntent.putExtra("id","1250");
                 startActivity(testIntent);
             }
         });
