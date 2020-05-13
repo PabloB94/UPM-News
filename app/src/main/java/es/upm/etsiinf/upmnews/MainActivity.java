@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import java.util.List;
 import java.util.Properties;
@@ -17,6 +19,7 @@ import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
     Bundle savedInstanceState;
     Context context = this;
+    Boolean guardar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         myDialog.setCancelable(false);
         Button login = myDialog.findViewById(R.id.loginDialogButton);
         Button cancel = myDialog.findViewById(R.id.cancelDialogButton);
-
+        Switch switchGuardar = myDialog.findViewById(R.id.switchRemember);
+        switchGuardar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    guardar = isChecked;
+            }
+        });
         final EditText username = myDialog.findViewById(R.id.et_username);
         final EditText password = myDialog.findViewById(R.id.et_password);
         myDialog.show();
@@ -58,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             {
                 String user = username.getText().toString();
                 String pwd = password.getText().toString();
-                LoginTask task = new LoginTask(user, pwd, myDialog, context);
+                LoginTask task = new LoginTask(user, pwd, myDialog, context,guardar);
                 task.execute();
             }
         });
