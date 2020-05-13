@@ -1,5 +1,6 @@
 package es.upm.etsiinf.upmnews;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ListView;
@@ -10,10 +11,12 @@ import java.util.List;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.AdaptadorListaArticulos;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
+import es.upm.etsiinf.upmnews.utils.network.exceptions.AuthenticationError;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     
 	private static final String TAG = "LoadArticlesTask";
+
 
 
     AsyncResponse delegate = null;
@@ -28,10 +31,25 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     @Override
     protected List<Article> doInBackground(Void... voids) {
         List<Article> res = null;
+
         //If connection has been successful
 
+
         try {
-            // obtain 6 articles from offset 0
+            //AQUI HABRIA QUE EXTRAER DE LA STORED  EL USER Y LA PASSWORD Y COMPROBAR SI ES NULL O NO
+            String strIdUser = "";
+            String password = "";
+
+
+           if (!ModelManager.isConnected()){
+                SharedPreferences preferencia = context.getSharedPreferences("user_info",context.MODE_PRIVATE);
+                strIdUser = preferencia.getString("id_user","");
+                password = preferencia.getString("password","");
+                Boolean guardado = !(password.equals("") || strIdUser.equals(""));
+                if(guardado){
+                    ModelManager.login(strIdUser, password);
+                }
+            }
             res = ModelManager.getArticles(6, 0);
             for (Article article : res) {
                 // We print articles in Log
@@ -39,6 +57,9 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
             }
         } catch (ServerCommunicationError e) {
             Log.e(TAG,e.getMessage());
+        }
+        catch (AuthenticationError e) {
+            Log.e(TAG, e.getMessage());
         }
 
         return res;
