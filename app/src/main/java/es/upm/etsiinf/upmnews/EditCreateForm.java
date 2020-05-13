@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +28,6 @@ import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
 public class EditCreateForm extends AppCompatActivity {
     private static final int SELECT_PHOTO = 1;
-    private Article upload;
     private String title;
     private String subtitle;
     private String resume;
@@ -87,31 +83,27 @@ public class EditCreateForm extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode){
-            case SELECT_PHOTO:
-                if(resultCode == Activity.RESULT_OK){
-                    InputStream stream = null;
+        if(requestCode==SELECT_PHOTO && resultCode == Activity.RESULT_OK){
+            InputStream stream = null;
+            try {
+                stream = getContentResolver().openInputStream(data.getData());
+                Bitmap bitmap = BitmapFactory.decodeStream(stream);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream .toByteArray();
+                articleImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                ((ImageView)findViewById(R.id.imageShow)).setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                Log.i("EditCreateForm",e.getMessage());
+            } finally {
+                if (stream != null) {
                     try {
-                        stream = getContentResolver().openInputStream(data.getData());
-                        Bitmap bitmap = BitmapFactory.decodeStream(stream);
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream .toByteArray();
-                        articleImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        ((ImageView)findViewById(R.id.imageShow)).setImageBitmap(bitmap);
-                    } catch (FileNotFoundException e) {
+                        stream.close();
+                    } catch (IOException e) {
                         Log.i("EditCreateForm",e.getMessage());
-                    } finally {
-                        if (stream != null) {
-                            try {
-                                stream.close();
-                            } catch (IOException e) {
-                                Log.i("EditCreateForm",e.getMessage());
-                            }
-                        }
                     }
-                }else{}
-
+                }
+            }
         }
     }
 
@@ -130,13 +122,12 @@ public class EditCreateForm extends AppCompatActivity {
     }
 
     private void saveArticle(){
-        upload = new Article(category,title, resume,body,subtitle,ModelManager.getIdUser());
+       Article upload = new Article(category,title, resume,body,subtitle,ModelManager.getIdUser());
         if(!articleImage.isEmpty()){
             upload.addImage(articleImage,"Imagen chula del articulo");
         }
         UploadArticleTask task = new UploadArticleTask(this,upload);
         task.execute();
-        //debemos setId del articulo creado
     }
 
     public void saveOk(){

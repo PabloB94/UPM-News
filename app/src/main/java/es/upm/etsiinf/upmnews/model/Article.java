@@ -61,9 +61,8 @@ public class Article extends ModelEntity {
 		this.idUser = Integer.parseInt(idUser);
 		this.abstractText = abstractText;
 		this.titleText = titleText;
-		bodyText = body;
+		this.bodyText = body;
 		this.subtitle = subtitle;
-		
 	}
 	
 	public void setId(int id){
@@ -127,6 +126,7 @@ public class Article extends ModelEntity {
 		int order = 1;
 		Image img =new Image(order, description, getId(), b64Image);
 		mainImage= img;
+		imageDescription = mainImage.getDescription();
 		return img;
 	}
 	
@@ -160,7 +160,7 @@ public class Article extends ModelEntity {
 		}else if (imageDescription!=null && !imageDescription.isEmpty()) {
 			res.put("image_description", imageDescription);
 		}
-		res.put("lastUpdate", lastUpdate==null?null:SerializationUtils.dateToString(lastUpdate));
+		res.put("lastUpdate",SerializationUtils.dateToString(lastUpdate));
 		return res;
 	}
 }
