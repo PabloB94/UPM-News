@@ -7,23 +7,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.util.List;
 import java.util.Properties;
 
 import androidx.appcompat.app.AppCompatActivity;
-import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
     Bundle savedInstanceState;
     Context context = this;
+    MainActivity main = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_main);
-        ModelManager mm = new ModelManager();
         Properties prop = new Properties();
         prop.setProperty("service_url","https://sanger.dia.fi.upm.es/pmd-task/");
         prop.setProperty("require_self_signed_cert","TRUE");
@@ -36,7 +34,16 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(List<Article> output) {}
+    public void processFinish(Boolean loginSuccess) {
+        if(loginSuccess){
+            LoadArticlesTask task = new LoadArticlesTask(this);
+            task.delegate = this;
+            task.loggedin = true;
+            task.execute();
+            this.findViewById(R.id.loginButton).setVisibility(View.GONE);
+            this.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
+        }
+    }
 
     public void callLoginDialog(View view)
     {
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 String user = username.getText().toString();
                 String pwd = password.getText().toString();
                 LoginTask task = new LoginTask(user, pwd, myDialog, context);
+                task.delegate = main;
                 task.execute();
             }
         });
@@ -70,5 +78,17 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 myDialog.cancel();
             }
         });
+    }
+
+    public void newArticle(View view) {
+
+    }
+
+    public void editArticle(View view){
+
+    }
+
+    public void deleteArticle(View view){
+
     }
 }

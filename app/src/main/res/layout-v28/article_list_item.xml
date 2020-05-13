@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -12,15 +13,15 @@
 
         <TextView
             android:id="@+id/tituloArticulo"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="0dp"
             android:layout_weight="9"
             android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:text="Hola"
             android:maxLines="2"
-            android:layout_width="0dp"
-            android:textFontWeight="bold"/>
+            android:text="Hola"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/categoryTV"
@@ -44,22 +45,54 @@
         <ImageView
             android:id="@+id/articuloImageView"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="100dp"
             android:layout_marginEnd="6dip"
             android:src="@drawable/ic_launcher_foreground"
-            android:layout_weight="3"
+            android:layout_weight="5"
             />
 
         <TextView
             android:id="@+id/abstractTV"
             android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:maxLines="5"
+            android:layout_height="100dp"
             android:layout_marginTop="3dp"
+            android:layout_weight="7"
+            android:maxLines="5"
             android:text="@string/article_abstract"
-            android:textSize="12sp"
-            android:layout_weight="9" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/extraButtons"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/editArticleButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_toStartOf="@+id/deleteArticleButton"
+            android:background="@drawable/drawable_pencil"
+            android:clickable="true"
+            android:src="@drawable/pencil"
+            android:onClick="editArticle"
+            app:layout_constraintEnd_toEndOf="@id/deleteArticleButton" />
+
+        <Button
+            android:id="@+id/deleteArticleButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/drawable_trash"
+            android:clickable="true"
+            android:src="@drawable/delete"
+            android:onClick="deleteArticle"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="5dp"/>
+    </RelativeLayout>
 </LinearLayout>

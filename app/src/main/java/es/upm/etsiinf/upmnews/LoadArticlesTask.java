@@ -15,15 +15,12 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     
 	private static final String TAG = "LoadArticlesTask";
 
-	//hardcoded stored credentials
-    String strIdUser="";
-    String strApiKey="";
-    String strIdAuthUser="";
 
-
-    public AsyncResponse delegate = null;
+    AsyncResponse delegate = null;
     private MainActivity context;
-    public LoadArticlesTask(MainActivity context){
+    Boolean loggedin = false;
+
+    LoadArticlesTask(MainActivity context){
         this.context = context;
     }
 
@@ -31,24 +28,6 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     @Override
     protected List<Article> doInBackground(Void... voids) {
         List<Article> res = null;
-        //ModelManager uses singleton pattern, connecting once per app execution in enough
-//        if (!ModelManager.isConnected()){
-//			// if it is the first login
-//            if (strIdUser==null || strIdUser.equals("")) {
-//                try {
-//                    ModelManager.login("DEV_TEAM_02", "01394");
-//                    strApiKey = ModelManager.getLoggedApiKey();
-//                    strIdAuthUser = ModelManager.getLoggedAuthType();
-//                    strIdUser = ModelManager.getLoggedIdUSer();
-//                } catch (AuthenticationError e) {
-//                    Log.e(TAG, e.getMessage());
-//                }
-//            }
-//			// if we have saved user credentials from previous connections
-//			else{
-//                ModelManager.stayloggedin(strIdUser,strApiKey,strIdAuthUser);
-//            }
-//        }
         //If connection has been successful
 
         try {
@@ -68,9 +47,8 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     @Override
     public void onPostExecute(List<Article> res){
         ListView listaArticulosView  = context.findViewById(R.id.listaArticulos);
-        AdaptadorListaArticulos adaptador = new AdaptadorListaArticulos(context,res);
+        AdaptadorListaArticulos adaptador = new AdaptadorListaArticulos(context,res,loggedin);
         listaArticulosView.setAdapter(adaptador);
-        delegate.processFinish(res);
     }
 
 }
