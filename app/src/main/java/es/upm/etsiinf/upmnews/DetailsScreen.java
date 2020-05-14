@@ -18,13 +18,12 @@ import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
 
 public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
-    private String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_screen);
         Intent in = getIntent();
-        id = in.getStringExtra("id");
+        String id = in.getStringExtra("id");
         GetArticleDetails task = new GetArticleDetails(this,id);
         task.execute();
     }
@@ -68,8 +67,11 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
     }
 
     @Override
-    public void processFinish(List<Article> output) {
-        loadElements(output.get(0));
+    public void processData(Article output) {
+        loadElements(output);
     }
+
+    @Override
+    public void processFinish(Boolean output) {}
 }
 

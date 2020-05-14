@@ -3,9 +3,6 @@ package es.upm.etsiinf.upmnews;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
@@ -36,8 +33,5 @@ public class GetArticleDetails extends AsyncTask<Void, Void, Article> {
     }
 
     @Override
-    public void onPostExecute(Article res){
-        List<Article> sol = new ArrayList<>();
-        sol.add(res);
-        context.processFinish(sol);}
+    public void onPostExecute(Article res){ context.processData(res);}
 }

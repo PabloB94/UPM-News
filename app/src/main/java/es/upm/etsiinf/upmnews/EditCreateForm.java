@@ -174,8 +174,7 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         task.execute();
     }
     @Override
-    public void processFinish(List<Article> output) {
-        Article loaded = output.get(0);
+    public void processData(Article output) {
         EditText title =findViewById(R.id.newTitle);
         EditText subtitle =findViewById(R.id.newSubtitle);
         EditText resume =findViewById(R.id.newAbstract);
@@ -183,12 +182,12 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         Spinner cat = findViewById(R.id.selectCategory);
         ImageView photo =findViewById(R.id.imageShow);
 
-        title.setText(loaded.getTitleText(), TextView.BufferType.EDITABLE);
-        subtitle.setText(loaded.getSubtitleText(),TextView.BufferType.EDITABLE);
-        resume.setText(loaded.getAbstractText(),TextView.BufferType.EDITABLE);
-        body.setText(loaded.getBodyText(),TextView.BufferType.EDITABLE);
-        cat.setSelection(getIndex(cat,loaded.getCategory()));
-        Image img = loaded.getImage();
+        title.setText(output.getTitleText(), TextView.BufferType.EDITABLE);
+        subtitle.setText(output.getSubtitleText(),TextView.BufferType.EDITABLE);
+        resume.setText(output.getAbstractText(),TextView.BufferType.EDITABLE);
+        body.setText(output.getBodyText(),TextView.BufferType.EDITABLE);
+        cat.setSelection(getIndex(cat,output.getCategory()));
+        Image img = output.getImage();
         if(img!=null){
             photo.setImageBitmap(getPhoto(img));
         }
@@ -208,4 +207,8 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
+
+    @Override
+    public void processFinish(Boolean output) {  }
+
 }
