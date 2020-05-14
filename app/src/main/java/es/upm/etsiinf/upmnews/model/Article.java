@@ -12,7 +12,7 @@ import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
 
 public class Article extends ModelEntity {
-	
+
 	private String titleText;
 	private String category;
 	private String abstractText;
@@ -61,9 +61,8 @@ public class Article extends ModelEntity {
 		this.idUser = Integer.parseInt(idUser);
 		this.abstractText = abstractText;
 		this.titleText = titleText;
-		bodyText = body;
+		this.bodyText = body;
 		this.subtitle = subtitle;
-		
 	}
 	
 	public void setId(int id){
@@ -111,7 +110,7 @@ public class Article extends ModelEntity {
 	public int getIdUser(){
 		return idUser;
 	}
-	public Image getImage() throws ServerCommunicationError {
+	public Image getImage() {
 		Image image = mainImage;
 		if (mainImage==null && thumbnail!=null && !thumbnail.isEmpty()){
 			image = new Image(1,"",getId(),thumbnail);
@@ -123,10 +122,11 @@ public class Article extends ModelEntity {
 		this.mainImage = image;
 	}
 	
-	public Image addImage(String b64Image, String description) throws ServerCommunicationError{	
+	public Image addImage(String b64Image, String description) {
 		int order = 1;
 		Image img =new Image(order, description, getId(), b64Image);
 		mainImage= img;
+		imageDescription = mainImage.getDescription();
 		return img;
 	}
 	
@@ -155,12 +155,12 @@ public class Article extends ModelEntity {
 			res.put("image_media_type", "image/png");
 		}
 
-		if (mainImage!=null && mainImage.getDescription()!=null && !mainImage.getDescription().isEmpty())
+		if (mainImage!=null && mainImage.getDescription()!=null && !mainImage.getDescription().isEmpty()) {
 			res.put("image_description", mainImage.getDescription());
-		else if (imageDescription!=null && !imageDescription.isEmpty())
+		}else if (imageDescription!=null && !imageDescription.isEmpty()) {
 			res.put("image_description", imageDescription);
-
-		res.put("lastUpdate", lastUpdate==null?null:SerializationUtils.dateToString(lastUpdate));
+		}
+		res.put("lastUpdate",SerializationUtils.dateToString(lastUpdate));
 		return res;
 	}
 }

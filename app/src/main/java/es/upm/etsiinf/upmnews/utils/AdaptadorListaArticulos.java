@@ -67,8 +67,7 @@ public class AdaptadorListaArticulos extends BaseAdapter {
                 }
                 image.setImageBitmap(decodedByte);
             }
-        } catch (ServerCommunicationError serverCommunicationError) {
-            serverCommunicationError.printStackTrace();
+            image.setImageBitmap(decodedByte);
         }
         view.setTag(this.datos.get(i).getId());
 
