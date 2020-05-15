@@ -16,6 +16,7 @@ import java.util.Hashtable;
 
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
+import es.upm.etsiinf.upmnews.utils.async.GetArticleDetails;
 
 public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
     @Override

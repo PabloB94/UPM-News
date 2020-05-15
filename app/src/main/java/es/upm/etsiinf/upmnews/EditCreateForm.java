@@ -23,11 +23,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
+import es.upm.etsiinf.upmnews.utils.async.GetArticleDetails;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
+import es.upm.etsiinf.upmnews.utils.async.UploadArticleTask;
 
 public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
     private static final int SELECT_PHOTO = 1;

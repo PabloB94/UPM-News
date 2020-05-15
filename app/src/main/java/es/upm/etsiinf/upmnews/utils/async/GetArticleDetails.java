@@ -1,8 +1,9 @@
-package es.upm.etsiinf.upmnews;
+package es.upm.etsiinf.upmnews.utils.async;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import es.upm.etsiinf.upmnews.AsyncResponse;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
@@ -14,7 +15,7 @@ public class GetArticleDetails extends AsyncTask<Void, Void, Article> {
     private AsyncResponse context;
     private String id;
 
-    GetArticleDetails(AsyncResponse cont, String id_art){
+    public GetArticleDetails(AsyncResponse cont, String id_art){
         this.context = cont;
         this.id = id_art;
     }
