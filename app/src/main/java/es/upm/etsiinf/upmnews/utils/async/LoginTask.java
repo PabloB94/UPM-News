@@ -1,4 +1,4 @@
-package es.upm.etsiinf.upmnews;
+package es.upm.etsiinf.upmnews.utils.async;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import es.upm.etsiinf.upmnews.AsyncResponse;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.AuthenticationError;
 
@@ -28,7 +29,7 @@ public class LoginTask extends AsyncTask<Void, Void, Boolean> {
     private Dialog myDialog;
 
 
-    public LoginTask(String user, String pwd, Dialog myDialog, Context context,Boolean guardar){
+    public LoginTask(String user, String pwd, Dialog myDialog, Context context, Boolean guardar){
         this.strIdUser = user;
         this.password = pwd;
         this.myDialog = myDialog;

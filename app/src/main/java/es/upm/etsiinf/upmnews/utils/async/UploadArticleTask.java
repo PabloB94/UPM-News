@@ -1,8 +1,9 @@
-package es.upm.etsiinf.upmnews;
+package es.upm.etsiinf.upmnews.utils.async;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import es.upm.etsiinf.upmnews.EditCreateForm;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;

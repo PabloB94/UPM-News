@@ -1,9 +1,7 @@
 package es.upm.etsiinf.upmnews;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,13 +9,14 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import java.util.Properties;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import es.upm.etsiinf.upmnews.model.Article;
+import es.upm.etsiinf.upmnews.utils.async.LoadArticlesTask;
+import es.upm.etsiinf.upmnews.utils.async.LoginTask;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
@@ -35,9 +34,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         prop.setProperty("service_url","https://sanger.dia.fi.upm.es/pmd-task/");
         prop.setProperty("require_self_signed_cert","TRUE");
         ModelManager.configureConnection(prop);
-        LoadArticlesTask task = new LoadArticlesTask(this);
-        task.delegate = this;
-        task.execute();
+        refresh();
 
     }
 
@@ -98,7 +95,32 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         });
     }
 
-    public void newArticle(View view) {
+    public void newArticle(View v) {
+        Intent editArticle = new Intent(context, EditCreateForm.class);
+        editArticle.putExtra( "id", "-1");
+        context.startActivity(editArticle);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refresh();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        refresh();
+    }
+
+    public void refresh() {
+        LoadArticlesTask task = new LoadArticlesTask(this);
+        task.delegate = this;
+        task.loggedin = ModelManager.isConnected();
+        task.execute();
+        if(task.loggedin){
+            this.findViewById(R.id.loginButton).setVisibility(View.GONE);
+            this.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
+        }
     }
 }

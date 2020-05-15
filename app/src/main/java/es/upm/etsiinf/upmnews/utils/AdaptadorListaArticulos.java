@@ -21,10 +21,12 @@ import android.widget.Toast;
 import java.util.List;
 
 import es.upm.etsiinf.upmnews.DetailsScreen;
+import es.upm.etsiinf.upmnews.EditCreateForm;
 import es.upm.etsiinf.upmnews.R;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
-import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
+import es.upm.etsiinf.upmnews.utils.async.DeleteArticleTask;
+
 
 public class AdaptadorListaArticulos extends BaseAdapter {
     private Context context;
@@ -93,7 +95,7 @@ public class AdaptadorListaArticulos extends BaseAdapter {
                 AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(context);
                 ViewParent parent = v.getParent();
                 View grandparent = (View) parent.getParent();
-                final CharSequence tag = grandparent.getTag().toString();
+                final String tag = grandparent.getTag().toString();
                 // Setting Dialog Title
                 alertDialog2.setTitle("Confirm Delete");
                 // Setting Dialog Message
@@ -104,10 +106,8 @@ public class AdaptadorListaArticulos extends BaseAdapter {
                 alertDialog2.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog
-                                Toast.makeText(context,
-                                        "You clicked on Yes to delete article " + tag, Toast.LENGTH_SHORT)
-                                        .show();
+                                DeleteArticleTask task = new DeleteArticleTask(tag, context);
+                                task.execute();
                             }
                         });
                 // Setting Negative "NO" Btn
@@ -132,9 +132,9 @@ public class AdaptadorListaArticulos extends BaseAdapter {
                 final CharSequence tag = grandparent.getTag().toString();
                 Toast toast = Toast.makeText(context, tag, duration);
                 toast.show();
-                Intent detalleArticulo = new Intent(context, DetailsScreen.class);
-                detalleArticulo.putExtra( "id", tag);
-                context.startActivity(detalleArticulo);
+                Intent editArticle = new Intent(context, EditCreateForm.class);
+                editArticle.putExtra( "id", tag);
+                context.startActivity(editArticle);
             }
         });
 

@@ -1,4 +1,4 @@
-package es.upm.etsiinf.upmnews;
+package es.upm.etsiinf.upmnews.utils.async;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -8,6 +8,9 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import es.upm.etsiinf.upmnews.AsyncResponse;
+import es.upm.etsiinf.upmnews.MainActivity;
+import es.upm.etsiinf.upmnews.R;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.AdaptadorListaArticulos;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
@@ -19,11 +22,11 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
 
 
 
-    AsyncResponse delegate = null;
+    public AsyncResponse delegate = null;
     private MainActivity context;
-    Boolean loggedin = false;
+    public Boolean loggedin = false;
 
-    LoadArticlesTask(MainActivity context){
+    public LoadArticlesTask(MainActivity context){
         this.context = context;
     }
 
@@ -51,10 +54,10 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
                 }
             }
             res = ModelManager.getArticles(6, 0);
-            for (Article article : res) {
-                // We print articles in Log
-                Log.i(TAG, article.toString());/////////////////////////////////añadido toString, daba error
-            }
+//            for (Article article : res) {
+//                // We print articles in Log
+//                Log.i(TAG, article.toString());/////////////////////////////////añadido toString, daba error
+//            }
         } catch (ServerCommunicationError e) {
             Log.e(TAG,e.getMessage());
         }
