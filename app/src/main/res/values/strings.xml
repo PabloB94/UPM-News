@@ -8,7 +8,7 @@
     <string name="hint_subtitle">Write the subtitle of your article</string>
     <string name="category_label">Select your category *</string>
     <string name="category_prompt">Choose one of the follow categories:</string>
-    <string name="cat_default"></string>
+    <string name="cat_default" />
     <string name="cat1">National</string>
     <string name="cat2">Economy</string>
     <string name="cat3">Sports</string>
@@ -23,9 +23,24 @@
     <string name="button_cancel">CANCEL</string>
     <string name="article_abstract">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lobortis nec sem et faucibus. Mauris eu consequat odio. Etiam imperdiet, leo quis viverra ultricies, augue est dictum nisl, in hendrerit dui felis sed arcu. Donec bibendum maximus nisi, a convallis augue hendrerit eget. Vestibulum ultricies diam sed ipsum condimentum, non vestibulum leo consectetur. Fusce condimentum nec leo at imperdiet. In lacinia, mauris sed suscipit pharetra, elit arcu efficitur sem, quis facilisis velit purus imperdiet dui. Duis aliquam congue hendrerit. Sed sagittis quam risus, ac hendrerit sem blandit quis. Donec lobortis eros felis, sed gravida nisi vulputate quis. Aliquam mattis arcu tortor, at varius neque hendrerit ut. </string>
     <string name="username">Username</string>
-    <string name="enter_username">Enter your username...</string>
+    <string name="enter_username">Enter your username…</string>
     <string name="password">Password</string>
-    <string name="enter_password">Enter your password...</string>
+    <string name="enter_password">Enter your password…</string>
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
+    <string name="mandatory_fields">All fields marked with * are mandatory</string>
+    <string name="complete_fields">Please complete all the required fields to proceed</string>
+    <string name="ok">OK</string>
+    <string name="article_saved_title">Your article was saved successfully</string>
+    <string name="article_saved">Your article has been saved and uploaded to our servers</string>
+    <string name="upload_error">Error uploading your article</string>
+    <string name="sorry">Sorry for the inconveniences</string>
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="delete_query">Are you sure you want delete this article?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="login_success">Successfully logged in</string>
+    <string name="login_error">Error logging in</string>
+    <string name="delete_success">Article deleted successfully</string>
+    <string name="delete_error">Error deleting article</string>
 </resources>

@@ -16,7 +16,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -79,10 +78,7 @@ public class AdaptadorListaArticulos extends BaseAdapter {
             @Override
             public void onClick(View v){
                 //Aqui deberia crearse un nuevo intent y pasarle los datos de la imagen o hacer una consulta especifica del id del articulo a la api.
-                int duration = Toast.LENGTH_SHORT;
                 CharSequence text = v.getTag().toString();
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
                 Intent detalleArticulo = new Intent(context, DetailsScreen.class);
                 detalleArticulo.putExtra( "id", text);
                 context.startActivity(detalleArticulo);
@@ -97,13 +93,13 @@ public class AdaptadorListaArticulos extends BaseAdapter {
                 View grandparent = (View) parent.getParent();
                 final String tag = grandparent.getTag().toString();
                 // Setting Dialog Title
-                alertDialog2.setTitle("Confirm Delete");
+                alertDialog2.setTitle(R.string.confirm_delete);
                 // Setting Dialog Message
-                alertDialog2.setMessage("Are you sure you want delete this article?");
+                alertDialog2.setMessage(R.string.delete_query);
                 // Setting Icon to Dialog
                 alertDialog2.setIcon(R.drawable.delete);
                 // Setting Positive "Yes" Btn
-                alertDialog2.setPositiveButton("Yes",
+                alertDialog2.setPositiveButton(R.string.yes,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 DeleteArticleTask task = new DeleteArticleTask(tag, context);
@@ -111,10 +107,9 @@ public class AdaptadorListaArticulos extends BaseAdapter {
                             }
                         });
                 // Setting Negative "NO" Btn
-                alertDialog2.setNegativeButton("No",
+                alertDialog2.setNegativeButton(R.string.no,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog
                                 dialog.cancel();
                             }
                         });
@@ -126,12 +121,9 @@ public class AdaptadorListaArticulos extends BaseAdapter {
         view.findViewById(R.id.editArticleButton).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                int duration = Toast.LENGTH_SHORT;
                 ViewParent parent = v.getParent();
                 View grandparent = (View) parent.getParent();
                 final CharSequence tag = grandparent.getTag().toString();
-                Toast toast = Toast.makeText(context, tag, duration);
-                toast.show();
                 Intent editArticle = new Intent(context, EditCreateForm.class);
                 editArticle.putExtra( "id", tag);
                 context.startActivity(editArticle);

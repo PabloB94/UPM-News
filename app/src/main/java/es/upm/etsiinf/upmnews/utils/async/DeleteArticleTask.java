@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import es.upm.etsiinf.upmnews.AsyncResponse;
 import es.upm.etsiinf.upmnews.MainActivity;
+import es.upm.etsiinf.upmnews.R;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
@@ -36,9 +37,9 @@ public class DeleteArticleTask extends AsyncTask<Void, Void, Boolean> {
     public void onPostExecute(Boolean res){
         String text;
         if(res){
-            text = "Article deleted successfully";
+            text = context.getString(R.string.delete_success);
         }else{
-            text = "Error deleting article";
+            text = context.getString(R.string.delete_error);
         }
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);

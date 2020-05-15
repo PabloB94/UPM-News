@@ -80,9 +80,9 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
             public void onClick(View v) {
                 if(!checkFields()){
                     AlertDialog.Builder mandatory = new AlertDialog.Builder(EditCreateForm.this);
-                    mandatory.setTitle("All fields marked with * are mandatory");
-                    mandatory.setMessage("Please complete all the required fields to proceed");
-                    mandatory.setPositiveButton("OK",null);
+                    mandatory.setTitle(R.string.mandatory_fields);
+                    mandatory.setMessage(R.string.complete_fields);
+                    mandatory.setPositiveButton(R.string.ok,null);
                     AlertDialog alert = mandatory.create();
                     alert.show();
                 }else{
@@ -150,9 +150,9 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
 
     public void saveOk(){
         AlertDialog.Builder ok = new AlertDialog.Builder(EditCreateForm.this);
-        ok.setTitle("Your article was saved successfully");
-        ok.setMessage("Your article has been saved and uploaded to our servers");
-        ok.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+        ok.setTitle(R.string.article_saved_title);
+        ok.setMessage(R.string.article_saved);
+        ok.setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
                 onBackPressed();
             }
@@ -163,9 +163,9 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
 
     public void saveFail(){
         AlertDialog.Builder ok = new AlertDialog.Builder(EditCreateForm.this);
-        ok.setTitle("Error uploading your article");
-        ok.setMessage("Sorry for the inconveniences");
-        ok.setPositiveButton("OK",null);
+        ok.setTitle(R.string.upload_error);
+        ok.setMessage(R.string.sorry);
+        ok.setPositiveButton(R.string.ok,null);
         AlertDialog okMessage = ok.create();
         okMessage.show();
     }
