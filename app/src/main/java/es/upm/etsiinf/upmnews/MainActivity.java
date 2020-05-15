@@ -16,6 +16,8 @@ import android.widget.Toast;
 import java.util.Properties;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         task.delegate = this;
         task.execute();
 
-
     }
 
     @Override
@@ -50,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             this.findViewById(R.id.loginButton).setVisibility(View.GONE);
             this.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void processData(Article output) {
     }
 
     public void callLoginDialog(View view)

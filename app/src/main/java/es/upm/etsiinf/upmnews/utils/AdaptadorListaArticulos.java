@@ -54,9 +54,9 @@ public class AdaptadorListaArticulos extends BaseAdapter {
         resumen.setText(Html.fromHtml(this.datos.get(i).getAbstractText(),Html.FROM_HTML_MODE_COMPACT));
         TextView categoria = view.findViewById(R.id.categoryTV);
         categoria.setText(this.datos.get(i).getCategory());
-        try {
-            ImageView image = view.findViewById(R.id.articuloImageView);;
-            Image img = this.datos.get(i).getImage();
+
+           ImageView image = view.findViewById(R.id.articuloImageView);;
+           Image img = this.datos.get(i).getImage();
             if (img != null) {
                 String imgbase64 = img.getImage();
                 byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
@@ -70,9 +70,7 @@ public class AdaptadorListaArticulos extends BaseAdapter {
                 }
                 image.setImageBitmap(decodedByte);
             }
-        } catch (ServerCommunicationError serverCommunicationError) {
-            serverCommunicationError.printStackTrace();
-        }
+
         view.setTag(this.datos.get(i).getId());
 
         view.setOnClickListener(new View.OnClickListener(){

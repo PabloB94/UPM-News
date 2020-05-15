@@ -11,11 +11,10 @@ import static es.upm.etsiinf.upmnews.utils.Logger.TAG;
 
 public class GetArticleDetails extends AsyncTask<Void, Void, Article> {
 
-    AsyncResponse delegate = null;
-    private DetailsScreen context;
+    private AsyncResponse context;
     private String id;
 
-    GetArticleDetails(DetailsScreen cont, String id_art){
+    GetArticleDetails(AsyncResponse cont, String id_art){
         this.context = cont;
         this.id = id_art;
     }
@@ -34,6 +33,5 @@ public class GetArticleDetails extends AsyncTask<Void, Void, Article> {
     }
 
     @Override
-    public void onPostExecute(Article res){
-        context.loadElements(res);}
+    public void onPostExecute(Article res){ context.processData(res);}
 }

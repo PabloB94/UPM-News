@@ -17,17 +17,14 @@ import java.util.Hashtable;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
 
-public class DetailsScreen extends AppCompatActivity implements AsyncResponse {
-    private String id;
-    private Article current;
+public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_screen);
         Intent in = getIntent();
-        id = in.getStringExtra("id");
+        String id = in.getStringExtra("id");
         GetArticleDetails task = new GetArticleDetails(this,id);
-        task.delegate = this;
         task.execute();
     }
 
@@ -70,8 +67,11 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(Boolean output) {
-//            current=output.get(0);
+    public void processData(Article output) {
+        loadElements(output);
     }
+
+    @Override
+    public void processFinish(Boolean output) {}
 }
 
