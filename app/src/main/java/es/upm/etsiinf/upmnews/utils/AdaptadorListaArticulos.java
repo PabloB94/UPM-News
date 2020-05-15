@@ -52,8 +52,8 @@ public class AdaptadorListaArticulos extends BaseAdapter {
         TextView categoria = view.findViewById(R.id.categoryTV);
         categoria.setText(this.datos.get(i).getCategory());
 
-            ImageView image = view.findViewById(R.id.articuloImageView);;
-            Image img = this.datos.get(i).getImage();
+           ImageView image = view.findViewById(R.id.articuloImageView);;
+           Image img = this.datos.get(i).getImage();
             if (img != null) {
                 String imgbase64 = img.getImage();
                 byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);

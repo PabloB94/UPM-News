@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void processData(Article output) {
-    //TODO
     }
 
     public void callLoginDialog(View view)
