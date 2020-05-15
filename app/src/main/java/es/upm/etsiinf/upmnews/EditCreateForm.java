@@ -73,6 +73,15 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
             }
         });
 
+        //button to erase the selected image
+        Button berase= findViewById(R.id.buttonPhotoErase);
+        berase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cleanImage();
+            }
+        });
+
         //button that checks all the mandatory fields and uploads the article to the server
         Button bsave = findViewById(R.id.buttonSave);
         bsave.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +184,13 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         ok.setPositiveButton("OK",null);
         AlertDialog okMessage = ok.create();
         okMessage.show();
+    }
+
+    public void cleanImage(){
+        articleImage="";
+        ImageView show = findViewById(R.id.imageShow);
+        show.setImageDrawable(null);
+
     }
 
     private void getData(String id){
