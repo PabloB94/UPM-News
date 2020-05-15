@@ -43,7 +43,6 @@ public class AdaptadorListaArticulos extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        //LayoutInflater inflater = LayoutInflater.from(contexto);
         if (view == null) {
             view = inflater.inflate(
                     R.layout.article_list_item, viewGroup,false);
@@ -154,6 +153,10 @@ public class AdaptadorListaArticulos extends BaseAdapter {
     @Override
     public long getItemId(int i) {
         return 0;
+    }
+
+    public void setDatos(List<Article> nuevosDatos){
+        this.datos = nuevosDatos;
     }
 
 }
