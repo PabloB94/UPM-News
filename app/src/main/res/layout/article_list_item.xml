@@ -80,7 +80,6 @@
             android:background="@drawable/drawable_pencil"
             android:clickable="true"
             android:src="@drawable/pencil"
-            android:onClick="editArticle"
             app:layout_constraintEnd_toEndOf="@id/deleteArticleButton" />
 
         <Button
@@ -91,7 +90,6 @@
             android:background="@drawable/drawable_trash"
             android:clickable="true"
             android:src="@drawable/delete"
-            android:onClick="deleteArticle"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="5dp"/>
     </RelativeLayout>
