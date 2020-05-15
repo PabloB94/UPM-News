@@ -130,9 +130,15 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
 
                     }
                 }
+                if(lastFirstVisibleItem> firstVisibleItem){
+                    context.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
+                }
                 lastFirstVisibleItem=firstVisibleItem;
             }
         });
+        }
+        else{
+            context.findViewById(R.id.newArticleButton).setVisibility(View.GONE);
         }
     }
 
