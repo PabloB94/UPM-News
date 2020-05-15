@@ -148,6 +148,13 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
 
     }
 
+    private void loadImage(Bitmap photo){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        articleImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
     public void saveOk(){
         AlertDialog.Builder ok = new AlertDialog.Builder(EditCreateForm.this);
         ok.setTitle("Your article was saved successfully");
@@ -189,8 +196,10 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         body.setText(output.getBodyText(),TextView.BufferType.EDITABLE);
         cat.setSelection(getIndex(cat,output.getCategory()));
         Image img = output.getImage();
-        if(img!=null){
-            photo.setImageBitmap(getPhoto(img));
+        if(img!=null && !img.getDescription().isEmpty()){
+            Bitmap oldphoto= getPhoto(img);
+            photo.setImageBitmap(oldphoto);
+            loadImage(oldphoto);
         }
     }
 

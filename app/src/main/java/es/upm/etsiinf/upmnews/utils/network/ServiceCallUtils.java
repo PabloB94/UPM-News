@@ -41,7 +41,7 @@ public class ServiceCallUtils {
             JSONObject jsonResult = (JSONObject) JSONValue.parseWithException(res);
             Set<String> keys = jsonResult.keySet();
             if (keys.contains("id"))
-                return Integer.parseInt((String) jsonResult.get("id"));
+                return Integer.parseInt(jsonResult.get("id").toString());
             else{
                 throw new ServerCommunicationError("Error: No id in json returned");
             }
