@@ -5,28 +5,23 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
-
+import java.util.List;
 import java.util.Properties;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import androidx.appcompat.widget.Toolbar;
 import es.upm.etsiinf.upmnews.model.Article;
-import es.upm.etsiinf.upmnews.utils.async.DeleteArticleTask;
 import es.upm.etsiinf.upmnews.utils.async.LoadArticlesTask;
 import es.upm.etsiinf.upmnews.utils.async.LoginTask;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
@@ -42,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     public int offsetL = 0;
     Menu barMenu;
     private Menu menu;
+    private List<Article> articles;
+    private enum Topics {NATIONAL, INTERNATIONAL, ECONOMY, TECHNOLOGY, ALL};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,16 +153,33 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 logout();
                 return true;
 
-            case R.id.filter:
-                Toast toast2 = Toast.makeText(this, "Filters", Toast.LENGTH_SHORT);
-                toast2.show();
-
+            case R.id.national:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.national);
+                filterArticles(Topics.NATIONAL);
+                break;
+            case R.id.international:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.international);
+                filterArticles(Topics.INTERNATIONAL);
+                break;
+            case R.id.economy:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.economy);
+                filterArticles(Topics.ECONOMY);
+                break;
+            case R.id.technology:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.technology);
+                filterArticles(Topics.TECHNOLOGY);
+                break;
+            case R.id.all:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.all);
+                filterArticles(Topics.ALL);
+                break;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
         }
+        return true;
     }
 
 
@@ -200,6 +215,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         menu.findItem(R.id.logout).setVisible(ModelManager.isConnected());
         refresh();
         return true;
+    }
+
+    public void setArticles(List<Article> articles){
+        this.articles = articles;
+    }
+
+    private List<Article> filterArticles(Topics topic){
+        return null;
     }
 
 }

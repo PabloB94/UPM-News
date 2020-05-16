@@ -140,6 +140,8 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
         else{
             if(loggedin) context.findViewById(R.id.newArticleButton).setVisibility(View.GONE);
         }
+
+        context.setArticles(res);
     }
 
 
