@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/filter"
-        android:title="@string/filter"
-        android:icon="@drawable/filter_variant"
-        app:showAsAction="ifRoom"/>
+        android:id="@+id/topicLabel"
+        android:title="@string/all"
+        app:showAsAction="always"
+        android:visible="true"
+        android:enabled="false"/>
     <item
         android:id="@+id/logout"
         android:title="@string/logout"
         android:icon="@drawable/logout"
         app:showAsAction="ifRoom"
+        android:visible="true"/>
+    <item
+        android:id="@+id/technology"
+        android:title="@string/technology"
+        app:showAsAction="never"
+        android:visible="true"/>
+    <item
+        android:id="@+id/national"
+        android:title="@string/national"
+        app:showAsAction="never"
+        android:visible="true"/>
+    <item
+        android:id="@+id/international"
+        android:title="@string/international"
+        app:showAsAction="never"
+        android:visible="true"/>
+    <item
+        android:id="@+id/economy"
+        android:title="@string/economy"
+        app:showAsAction="never"
+        android:visible="true"/>
+    <item
+        android:id="@+id/all"
+        android:title="@string/all"
+        app:showAsAction="never"
         android:visible="true"/>
 </menu>
