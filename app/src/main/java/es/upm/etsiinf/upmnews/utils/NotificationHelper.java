@@ -96,7 +96,7 @@ public class NotificationHelper extends ContextWrapper {
 
             // no need to create an artificial back state
             PendindIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+.
             mBuilder.setContentIntent(resultPendingIntent);
 
             NotificacionManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
