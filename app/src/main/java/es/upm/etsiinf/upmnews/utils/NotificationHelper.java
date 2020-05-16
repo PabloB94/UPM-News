@@ -15,7 +15,7 @@ import es.upm.etsiinf.upmnews.R;
 
 public class NotificationHelper extends ContextWrapper {
     private NotificationManager manager;
-    private final String DEFAULT_CHANNEL = "DEFAULT_CHANNEL";
+    private final String DEFAULT_CHANNEL = "NEW ARTICLES";
     public static final String DEFAULT_CHANNEL_ID = "1";
 
     private final String GROUP_NAME = "GROUP";
@@ -31,35 +31,33 @@ public class NotificationHelper extends ContextWrapper {
             NotificationChannel defaultChannel =  new NotificationChannel(DEFAULT_CHANNEL_ID, DEFAULT_CHANNEL, NotificationManager.IMPORTANCE_HIGH);
             defaultChannel.setShowBadge(true);
             defaultChannel.setLockscreenVisibility(android.app.Notification.VISIBILITY_PUBLIC);
-
             getManager().createNotificationChannel(defaultChannel);
         }
     }
 
-    private Notification.Builder createNotification (String channelID) {
-        Intent intent = new Intent(this, Activity.class); // No se que actividad es
+    public Notification.Builder createNotification (String channelID,String category) {
+        Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //intent.putExtra("msg",msg);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         return new Notification.Builder(getApplicationContext(), channelID)
                 .setContentTitle("UPM_NEWS")
-                .setContentText("Notificación del articulo nuevo en el server o modificado")
+                .setContentText("New articles available on UPM NEWS")
                 .setContentIntent(pendingIntent)
                 //.setStyle(new Notification.BigTextStyle().bigText(msg))
-                .setGroup(GROUP_NAME)
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setGroup(category)
+                .setSmallIcon(R.drawable.ic_news)
                 .setAutoCancel(true);
 
     }
 
-    public void publishNotificationGroup (boolean priority) {
+    public void publishNotificationGroup (String category) {
         String channelID = DEFAULT_CHANNEL_ID;
 
         Notification groupNotification = new Notification.Builder(getApplicationContext(), channelID)
                 .setSmallIcon(R.drawable.ic_news)
-                .setGroup(GROUP_NAME)
+                .setGroup(category)
                 .setGroupSummary(true)
                 .build();
         getManager().notify(GROUP_ID, groupNotification);
