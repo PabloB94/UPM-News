@@ -152,7 +152,7 @@ public class Article extends ModelEntity {
 		res.put("subtitle", subtitle);
 		if (mainImage!=null){
 			res.put("image_data", mainImage.getImage());
-			res.put("image_media_type", "image/png");
+			res.put("image_media_type", "image/jpg");
 		}
 
 		if (mainImage!=null && mainImage.getDescription()!=null && !mainImage.getDescription().isEmpty()) {

@@ -73,6 +73,15 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
             }
         });
 
+        //button to erase the selected image
+        Button berase= findViewById(R.id.buttonPhotoErase);
+        berase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cleanImage();
+            }
+        });
+
         //button that checks all the mandatory fields and uploads the article to the server
         Button bsave = findViewById(R.id.buttonSave);
         bsave.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +157,13 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
 
     }
 
+    private void loadImage(Bitmap photo){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        articleImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
     public void saveOk(){
         AlertDialog.Builder ok = new AlertDialog.Builder(EditCreateForm.this);
         ok.setTitle(R.string.article_saved_title);
@@ -170,6 +186,13 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         okMessage.show();
     }
 
+    public void cleanImage(){
+        articleImage="";
+        ImageView show = findViewById(R.id.imageShow);
+        show.setImageDrawable(null);
+
+    }
+
     private void getData(String id){
         GetArticleDetails task = new GetArticleDetails(this,id);
         task.execute();
@@ -189,8 +212,10 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         body.setText(output.getBodyText(),TextView.BufferType.EDITABLE);
         cat.setSelection(getIndex(cat,output.getCategory()));
         Image img = output.getImage();
-        if(img!=null){
-            photo.setImageBitmap(getPhoto(img));
+        if(img!=null && !img.getDescription().isEmpty()){
+            Bitmap oldphoto= getPhoto(img);
+            photo.setImageBitmap(oldphoto);
+            loadImage(oldphoto);
         }
     }
 
