@@ -1,14 +1,13 @@
 package es.upm.etsiinf.upmnews.model;
 
 
+import org.json.simple.JSONObject;
+
 import java.util.Date;
 import java.util.Hashtable;
 
-import org.json.simple.JSONObject;
-
 import es.upm.etsiinf.upmnews.utils.Logger;
 import es.upm.etsiinf.upmnews.utils.SerializationUtils;
-import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
 
 public class Article extends ModelEntity {
