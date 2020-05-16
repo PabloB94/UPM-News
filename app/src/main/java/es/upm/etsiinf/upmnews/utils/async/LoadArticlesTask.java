@@ -66,10 +66,7 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
                loggedin = true;
            }
             res = ModelManager.getArticles(30, context.offsetL);
-//            for (Article article : res) {
-//                // We print articles in Log
-//                Log.i(TAG, article.toString());/////////////////////////////////añadido toString, daba error
-//            }
+
         } catch (ServerCommunicationError e) {
             Log.e(TAG,e.getMessage());
         }
