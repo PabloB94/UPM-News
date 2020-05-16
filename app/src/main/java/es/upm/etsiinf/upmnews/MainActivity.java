@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     Context context = this;
     Boolean guardar = false;
     MainActivity main = this;
+    public int offsetL = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +42,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public void processFinish(Boolean loginSuccess) {
         if(loginSuccess){
-            LoadArticlesTask task = new LoadArticlesTask(this);
-            task.delegate = this;
-            task.loggedin = true;
-            task.execute();
+            refresh();
             this.findViewById(R.id.loginButton).setVisibility(View.GONE);
             this.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
         }
@@ -117,10 +115,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         LoadArticlesTask task = new LoadArticlesTask(this);
         task.delegate = this;
         task.loggedin = ModelManager.isConnected();
+        this.offsetL = 0;
         task.execute();
-        if(task.loggedin){
-            this.findViewById(R.id.loginButton).setVisibility(View.GONE);
-            this.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
-        }
+
     }
 }

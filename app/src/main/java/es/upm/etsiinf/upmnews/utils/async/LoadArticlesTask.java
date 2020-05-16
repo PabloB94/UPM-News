@@ -2,8 +2,13 @@ package es.upm.etsiinf.upmnews.utils.async;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import java.util.List;
 
@@ -24,6 +29,10 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     public AsyncResponse delegate = null;
     private MainActivity context;
     public Boolean loggedin = false;
+    public List<Article> listaArticulos;
+    public AdaptadorListaArticulos adaptador;
+    Parcelable state = null;
+    ListView listaArticulosView ;
 
     public LoadArticlesTask(MainActivity context){
         this.context = context;
@@ -48,11 +57,15 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
                 strIdUser = preferencia.getString("id_user","");
                 password = preferencia.getString("password","");
                 Boolean guardado = !(password.equals("") || strIdUser.equals(""));
-                if(guardado){
+                    if(guardado){
                     ModelManager.login(strIdUser, password);
+                    loggedin = true;
                 }
             }
-            res = ModelManager.getArticles(6, 0);
+           else{
+               loggedin = true;
+           }
+            res = ModelManager.getArticles(6, context.offsetL);
 //            for (Article article : res) {
 //                // We print articles in Log
 //                Log.i(TAG, article.toString());/////////////////////////////////añadido toString, daba error
@@ -69,9 +82,64 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
 
     @Override
     public void onPostExecute(List<Article> res){
-        ListView listaArticulosView  = context.findViewById(R.id.listaArticulos);
-        AdaptadorListaArticulos adaptador = new AdaptadorListaArticulos(context,res,loggedin);
+        listaArticulosView  = context.findViewById(R.id.listaArticulos);
+        Boolean scroll = false;
+        int tamanioAntiguo = 0;
+
+        if(!res.isEmpty()){
+
+        if(listaArticulos != null){
+            tamanioAntiguo = listaArticulos.size();
+            listaArticulos.addAll(res);
+            res = listaArticulos;
+        }
+        else{
+            listaArticulos = res;
+            res = listaArticulos;
+        }
+
+        adaptador = new AdaptadorListaArticulos(context,res,loggedin);
         listaArticulosView.setAdapter(adaptador);
+
+        if(tamanioAntiguo != 0 && tamanioAntiguo != listaArticulos.size()){
+            listaArticulosView.onRestoreInstanceState(state);
+        }
+
+        if(loggedin){
+            context.findViewById(R.id.loginButton).setVisibility(View.GONE);
+            context.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
+        }
+        listaArticulosView.setOnScrollListener(new AbsListView.OnScrollListener(){
+            private int lastFirstVisibleItem;
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                if(lastFirstVisibleItem<firstVisibleItem){
+                    if(firstVisibleItem + visibleItemCount >= totalItemCount){
+                        context.offsetL = firstVisibleItem + visibleItemCount;
+
+                        LoadArticlesTask task = new LoadArticlesTask(context);
+                        task.delegate = context;
+                        task.listaArticulos = listaArticulos;
+                        task.state = listaArticulosView.onSaveInstanceState();
+                        task.execute();
+
+                    }
+                }
+                if(lastFirstVisibleItem> firstVisibleItem){
+                    context.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
+                }
+                lastFirstVisibleItem=firstVisibleItem;
+            }
+        });
+        }
+        else{
+            context.findViewById(R.id.newArticleButton).setVisibility(View.GONE);
+        }
     }
+
 
 }
