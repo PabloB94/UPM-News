@@ -6,34 +6,34 @@ import java.util.Properties;
 
 public class RESTConnection {
     private Properties ini  = null;
-    protected String idUser = null;
-    protected String authType;
-    protected String apikey;
+    String idUser = null;
+    String authType;
+    String apikey;
 
-    public void clear(){
+    void clear(){
         idUser = null;
         authType = null;
         apikey = null;
     }
 
-    protected boolean isAdministrator = false;
+    boolean isAdministrator = false;
 
-    protected String serviceUrl ;
+    String serviceUrl ;
 
-    protected boolean requireSelfSigned = false;
+    boolean requireSelfSigned = false;
 
     public static final String ATTR_LOGIN_USER = "username";
     public static final String ATTR_LOGIN_PASS = "password";
-    public static final String ATTR_SERVICE_URL = "service_url";
-    public static final String ATTR_REQUIRE_SELF_CERT = "require_self_signed_cert";
-    public static final String ATTR_PROXY_HOST = "";
-    public static final String ATTR_PROXY_PORT = "";
-    public static final String ATTR_PROXY_USER = "";
-    public static final String ATTR_PROXY_PASS = "";
+    private static final String ATTR_SERVICE_URL = "service_url";
+    private static final String ATTR_REQUIRE_SELF_CERT = "require_self_signed_cert";
+    private static final String ATTR_PROXY_HOST = "";
+    private static final String ATTR_PROXY_PORT = "";
+    private static final String ATTR_PROXY_USER = "";
+    private static final String ATTR_PROXY_PASS = "";
     public static final String ATTR_APACHE_AUTH_USER = "";
     public static final String ATTR_APACHE_AUTH_PASS = "";
 
-    protected RESTConnection(Properties ini){
+    RESTConnection(Properties ini){
         this.ini = ini;
         if (!ini.containsKey(ATTR_SERVICE_URL)){
             throw new IllegalArgumentException("Required attribute '"+ ATTR_SERVICE_URL+"' not found!");

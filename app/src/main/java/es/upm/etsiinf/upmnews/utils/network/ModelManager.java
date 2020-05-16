@@ -1,6 +1,9 @@
 package es.upm.etsiinf.upmnews.utils.network;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -412,5 +415,14 @@ public class ModelManager {
             Logger.log (Logger.ERROR, "Deleting image of article (id:"+idArticle+") : " + e.getClass() + " ( "+e.getMessage() + ")");
             throw new ServerCommunicationError(e.getClass() + " ( "+e.getMessage() + ")");
         }
+    }
+
+    public static void logout(Context context){
+        rc.clear();
+        SharedPreferences preferencia = context.getSharedPreferences("user_info",context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferencia.edit();
+        editor.putString("id_user", "");
+        editor.putString("password", "");
+        editor.commit();
     }
 }
