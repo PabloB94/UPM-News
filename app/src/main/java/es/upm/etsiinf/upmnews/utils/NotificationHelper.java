@@ -15,6 +15,7 @@ import es.upm.etsiinf.upmnews.R;
 
 public class NotificationHelper extends ContextWrapper {
     private NotificationManager manager;
+
     private final String DEFAULT_CHANNEL = "NEW ARTICLES";
     public static final String DEFAULT_CHANNEL_ID = "1";
 
@@ -23,19 +24,22 @@ public class NotificationHelper extends ContextWrapper {
         createChannels();
     }
 
+    //Create channel
     private void createChannels() {
         NotificationChannel defaultChannel =  new NotificationChannel(DEFAULT_CHANNEL_ID, DEFAULT_CHANNEL, NotificationManager.IMPORTANCE_HIGH);
+        //Channel configuration
         defaultChannel.setShowBadge(true);
         defaultChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         getManager().createNotificationChannel(defaultChannel);
     }
 
+    //Create notification
     public void createNotification (int num) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+        //Build the notification
         Notification.Builder mBuilder= new Notification.Builder(getApplicationContext(), DEFAULT_CHANNEL_ID)
                 .setContentTitle("UPM_NEWS")
                 .setContentText( num +" New articles available on UPM NEWS")
@@ -46,13 +50,14 @@ public class NotificationHelper extends ContextWrapper {
 
     }
 
+    //Obtain the date when an article is created or modified
     public String getDate(){
         SharedPreferences preferencia = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String res=preferencia.getString("date",SerializationUtils.dateToString(null));
-        Log.w("Notification Date",res);
         return res;
     }
 
+    //Gets an instance of the NotificationManager service
     private NotificationManager getManager() {
         if (manager == null) {
             manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
