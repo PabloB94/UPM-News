@@ -27,6 +27,8 @@ import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
 import es.upm.etsiinf.upmnews.utils.async.DeleteArticleTask;
 
+import static es.upm.etsiinf.upmnews.utils.SerializationUtils.createScaledImage;
+
 
 public class AdaptadorListaArticulos extends BaseAdapter {
     private Context context;
@@ -61,17 +63,10 @@ public class AdaptadorListaArticulos extends BaseAdapter {
            ImageView image = view.findViewById(R.id.articuloImageView);;
            Image img = this.datos.get(i).getImage();
             if (img != null) {
-                String imgbase64 = img.getImage();
-                byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
+                byte[] decodedString = Base64.decode(img.getImage(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                int width = decodedByte.getWidth();
-                int height = decodedByte.getHeight();
-                if(height > width){
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) image.getLayoutParams();
-                    params.weight = 2.0f;
-                    image.setLayoutParams(params);
-                }
-                image.setImageBitmap(decodedByte);
+                Bitmap scaledImage = createScaledImage(decodedByte,2000,2000);
+                image.setImageBitmap(scaledImage);
             }
 
         view.setTag(this.datos.get(i).getId());
