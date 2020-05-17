@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import java.util.List;
 
 import es.upm.etsiinf.upmnews.AsyncResponse;

@@ -15,7 +15,6 @@ import android.view.ViewParent;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ import es.upm.etsiinf.upmnews.R;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
 import es.upm.etsiinf.upmnews.utils.async.DeleteArticleTask;
-import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
 
 public class AdaptadorListaArticulos extends BaseAdapter {

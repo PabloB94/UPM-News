@@ -10,16 +10,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -234,6 +232,11 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         adapter.filter(topic);
         ListView listaArticulosView  = this.findViewById(R.id.listaArticulos);
         listaArticulosView.setAdapter(adapter);
+    }
+
+    public Date getLastUpdate(){
+        if (articles != null && !articles.isEmpty()) return articles.get(0).getLastUpdate();
+        else return null;
     }
 
 }
