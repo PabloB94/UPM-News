@@ -50,7 +50,8 @@ public class LoginTask extends AsyncTask<Void, Void, Boolean> {
                 SharedPreferences preferencia = context.getSharedPreferences("user_info",context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferencia.edit();
                 editor.putString("id_user", strIdUser);
-                editor.putString("password", password);
+                editor.putString("strApiKey", strApiKey);
+                editor.putString("strIdAuthUser", strIdAuthUser);
                 editor.commit();
             }
 

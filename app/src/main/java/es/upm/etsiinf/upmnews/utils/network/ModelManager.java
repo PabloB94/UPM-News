@@ -335,7 +335,8 @@ public class ModelManager {
         SharedPreferences preferencia = context.getSharedPreferences("user_info",context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferencia.edit();
         editor.putString("id_user", "");
-        editor.putString("password", "");
+        editor.putString("strApiKey", "");
+        editor.putString("strIdAuthUser", "");
         editor.commit();
     }
 }

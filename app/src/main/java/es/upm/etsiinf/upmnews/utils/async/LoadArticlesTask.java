@@ -47,16 +47,18 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
         try {
             //AQUI HABRIA QUE EXTRAER DE LA STORED  EL USER Y LA PASSWORD Y COMPROBAR SI ES NULL O NO
             String strIdUser = "";
-            String password = "";
+            String strApiKey = "";
+            String strIdAuthUser = "";
 
 
            if (!ModelManager.isConnected()){
                 SharedPreferences preferencia = context.getSharedPreferences("user_info",context.MODE_PRIVATE);
                 strIdUser = preferencia.getString("id_user","");
-                password = preferencia.getString("password","");
-                Boolean guardado = !(password.equals("") || strIdUser.equals(""));
+               strApiKey = preferencia.getString("strApiKey","");
+               strIdAuthUser = preferencia.getString("strIdAuthUser","");
+                Boolean guardado = !(strApiKey.equals("") || strIdUser.equals("") || strIdAuthUser.equals(""));
                     if(guardado){
-                    ModelManager.login(strIdUser, password);
+                    ModelManager.stayloggedin(strIdUser,strApiKey,strIdAuthUser);
                     loggedin = true;
                 }
             }
@@ -67,10 +69,6 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
 
         } catch (ServerCommunicationError e) {
             Log.e(TAG,e.getMessage());
-        }
-        catch (AuthenticationError e) {
-            Log.e(TAG, e.getMessage());
-            loggedin = false;
         }
 
         return res;
