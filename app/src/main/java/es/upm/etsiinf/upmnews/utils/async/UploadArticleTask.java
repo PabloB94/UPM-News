@@ -26,7 +26,7 @@ public class UploadArticleTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         boolean res= true;
         try {
-            int id = ModelManager.saveArticle(upload);
+            ModelManager.saveArticle(upload);
         } catch (ServerCommunicationError e) {
             res=false;
             Log.i("UploadArticleTask",e.getMessage());

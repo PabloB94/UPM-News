@@ -18,9 +18,9 @@ public class GetArticleDetails extends AsyncTask<Void, Void, Article> {
     private String id;
 
     //Constructor of the async task
-    public GetArticleDetails(AsyncResponse cont, String id_art){
+    public GetArticleDetails(AsyncResponse cont, String idArt){
         this.context = cont;
-        this.id = id_art;
+        this.id = idArt;
     }
 
     //Async method executed

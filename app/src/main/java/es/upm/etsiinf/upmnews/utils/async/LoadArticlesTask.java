@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -93,7 +92,6 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
         }
         else{
             listaArticulos = res;
-            res = listaArticulos;
         }
 
         adaptador = new AdaptadorListaArticulos(context,res,loggedin);
@@ -113,25 +111,24 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
         //Scroll Listener to load more Articles
         listaArticulosView.setOnScrollListener(new AbsListView.OnScrollListener(){
             private int lastFirstVisibleItem;
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
+            //Not needed. Implemented for interface
             }
+
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if(lastFirstVisibleItem<firstVisibleItem){
-                    if(firstVisibleItem + visibleItemCount >= totalItemCount){
-                        LoadArticlesTask task = new LoadArticlesTask(context);
-                        task.delegate = context;
-                        task.listaArticulos = listaArticulos;
-                        task.state = listaArticulosView.onSaveInstanceState();
-                        context.findViewById(R.id.progress_bar_layout).setVisibility(View.VISIBLE);
-                        task.execute();
-
-                    }
+                if (lastFirstVisibleItem < firstVisibleItem && firstVisibleItem + visibleItemCount >= totalItemCount) {
+                    LoadArticlesTask task = new LoadArticlesTask(context);
+                    task.delegate = context;
+                    task.listaArticulos = listaArticulos;
+                    task.state = listaArticulosView.onSaveInstanceState();
+                    context.findViewById(R.id.progress_bar_layout).setVisibility(View.VISIBLE);
+                    task.execute();
                 }
-                if(lastFirstVisibleItem> firstVisibleItem){
-                    if(loggedin) context.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
-                }
+                if (lastFirstVisibleItem > firstVisibleItem && loggedin)
+                    context.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
                 lastFirstVisibleItem=firstVisibleItem;
             }
         });

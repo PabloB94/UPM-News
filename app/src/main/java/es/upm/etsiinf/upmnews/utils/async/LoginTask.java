@@ -50,7 +50,7 @@ public class LoginTask extends AsyncTask<Void, Void, Boolean> {
             strIdUser = ModelManager.getLoggedIdUSer();
 
             //Guardar información del usuario
-            if(guardar && (strApiKey != "" || strApiKey != null)){
+            if(guardar && (!strApiKey.equals("") || strApiKey != null)){
                 SharedPreferences preferencia = context.getSharedPreferences("user_info",context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferencia.edit();
                 editor.putString("id_user", strIdUser);

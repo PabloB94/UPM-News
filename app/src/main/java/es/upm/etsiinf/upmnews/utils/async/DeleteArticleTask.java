@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import es.upm.etsiinf.upmnews.AsyncResponse;
 import es.upm.etsiinf.upmnews.MainActivity;
 import es.upm.etsiinf.upmnews.R;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;

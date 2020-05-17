@@ -15,7 +15,7 @@ import es.upm.etsiinf.upmnews.R;
 public class NotificationHelper extends ContextWrapper {
     private NotificationManager manager;
 
-    private final String DEFAULT_CHANNEL = "NEW ARTICLES";
+    private static final String DEFAULT_CHANNEL = "NEW ARTICLES";
     public static final String DEFAULT_CHANNEL_ID = "1";
 
     public NotificationHelper(Context base) {
@@ -52,8 +52,7 @@ public class NotificationHelper extends ContextWrapper {
     //Obtain the date when an article is created or modified
     public String getDate(){
         SharedPreferences preferencia = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String res=preferencia.getString("date",SerializationUtils.dateToString(null));
-        return res;
+        return preferencia.getString("date",SerializationUtils.dateToString(null));
     }
 
     //Gets an instance of the NotificationManager service
