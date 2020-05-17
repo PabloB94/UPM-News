@@ -44,6 +44,7 @@ public class LoginTask extends AsyncTask<Void, Void, Boolean> {
             ModelManager.login(strIdUser, password);
             strApiKey = ModelManager.getLoggedApiKey();
             strIdAuthUser = ModelManager.getLoggedAuthType();
+            strIdUser = ModelManager.getLoggedIdUSer();
 
             //Guardar información del usuario
             if(guardar && (strApiKey != "" || strApiKey != null)){
