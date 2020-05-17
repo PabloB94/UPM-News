@@ -1,6 +1,5 @@
 package es.upm.etsiinf.upmnews.utils;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,23 +8,15 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import androidx.core.app.NotificationCompat;
-
 import es.upm.etsiinf.upmnews.MainActivity;
 import es.upm.etsiinf.upmnews.R;
 
 public class NotificationHelper extends ContextWrapper {
     private NotificationManager manager;
-    public String savedDate="";
     private final String DEFAULT_CHANNEL = "NEW ARTICLES";
     public static final String DEFAULT_CHANNEL_ID = "1";
-
-    private final String GROUP_NAME = "All";
-    public static final int GROUP_ID = 1;
 
     public NotificationHelper(Context base) {
         super(base);
@@ -49,11 +40,9 @@ public class NotificationHelper extends ContextWrapper {
                 .setContentTitle("UPM_NEWS")
                 .setContentText( num +" New articles available on UPM NEWS")
                 .setContentIntent(pendingIntent)
-                .setGroup(GROUP_NAME)
-                .setGroupSummary(true)
                 .setSmallIcon(R.drawable.ic_news)
                 .setAutoCancel(true);
-        getManager().notify(GROUP_ID,mBuilder.build());
+        getManager().notify(1,mBuilder.build());
 
     }
 
