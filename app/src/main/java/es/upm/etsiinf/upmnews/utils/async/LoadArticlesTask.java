@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -65,7 +66,8 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
            else{
                loggedin = true;
            }
-            res = ModelManager.getArticles(30, context.offsetL);
+            res = ModelManager.getArticles(20, context.offsetL);
+
         } catch (ServerCommunicationError e) {
             Log.e(TAG,e.getMessage());
         }
@@ -112,10 +114,14 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
             }
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
                 if(lastFirstVisibleItem<firstVisibleItem){
                     if(firstVisibleItem + visibleItemCount >= totalItemCount){
                         //context.offsetL = firstVisibleItem + visibleItemCount;
+
+                        int duration = Toast.LENGTH_SHORT;
+                        CharSequence text = "Loading more articles...";
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
 
                         LoadArticlesTask task = new LoadArticlesTask(context);
                         task.delegate = context;

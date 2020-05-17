@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         prop.setProperty("service_url","https://sanger.dia.fi.upm.es/pmd-task/");
         prop.setProperty("require_self_signed_cert","TRUE");
         ModelManager.configureConnection(prop);
-        refresh();
+        //refresh();
         scheduleNotifications();
 
     }
@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     protected void onRestart() {
         super.onRestart();
-        refresh();
     }
 
     public void refresh() {
@@ -246,7 +245,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         inflater.inflate(R.menu.appbar, menu);
         this.menu = menu;
         menu.findItem(R.id.logout).setVisible(ModelManager.isConnected());
-        refresh();
         return true;
     }
 

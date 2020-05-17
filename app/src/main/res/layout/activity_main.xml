@@ -13,10 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorPrimary"
-        app:titleTextColor="#FFFFFF"
+        app:titleTextColor="@color/white"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:elevation="4dp"/>
+        android:theme="@style/AppWhiteTheme"
+        android:elevation="4dp"
+        app:subtitleTextColor="@color/white"/>
 
 
     <ListView

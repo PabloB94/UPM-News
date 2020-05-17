@@ -7,7 +7,7 @@
         android:title="@string/all"
         app:showAsAction="always"
         android:visible="true"
-        android:enabled="false"/>
+        android:enabled="true" />
     <item
         android:id="@+id/logout"
         android:title="@string/logout"
