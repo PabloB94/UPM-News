@@ -17,18 +17,20 @@ public class LoginTask extends AsyncTask<Void, Void, Boolean> {
 
     private static final String TAG = "LoadArticlesTask";
 
+    //credentials to perform the login connection to the server
     private String strIdUser;
     private String strApiKey;
     private String strIdAuthUser;
     private String password;
+    //variable to control the remember me option
     private Boolean guardar;
-
-
+    //calling contexts of the app to perform callbacks
     public AsyncResponse delegate = null;
     private Context context;
     private Dialog myDialog;
 
 
+    //Constructor of the async task
     public LoginTask(String user, String pwd, Dialog myDialog, Context context, Boolean guardar){
         this.strIdUser = user;
         this.password = pwd;
@@ -37,6 +39,7 @@ public class LoginTask extends AsyncTask<Void, Void, Boolean> {
         this.guardar = guardar;
     }
 
+    //Async method executed
     @Override
     protected Boolean doInBackground(Void... voids) {
         try {
@@ -63,19 +66,17 @@ public class LoginTask extends AsyncTask<Void, Void, Boolean> {
             return false;
         }
     }
-    //If connection has been successful
 
-
+    //Async method executed when task finished to display feedback of the operation
     @Override
     public void onPostExecute(Boolean success){
-        int duration = Toast.LENGTH_SHORT;
         CharSequence text;
         if(success){
             text  = context.getString(R.string.login_success);
         }else{
             text = context.getString(R.string.login_error);
         }
-        Toast toast = Toast.makeText(context, text, duration);
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
         toast.show();
         myDialog.cancel();
         delegate.processFinish(success);

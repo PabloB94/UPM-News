@@ -13,15 +13,18 @@ import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
 public class DeleteArticleTask extends AsyncTask<Void, Void, Boolean> {
 
+    //id from the article selected to delete
     private String id;
+    //calling context of this task
     private Context context;
-    public AsyncResponse delegate = null;
 
+    //Constructor of the async task
     public DeleteArticleTask(String id, Context context){
         this.id = id;
         this.context = context;
     }
 
+    //Async method executed
     @Override
     protected Boolean doInBackground(Void... voids) {
         boolean res= true;
@@ -33,6 +36,8 @@ public class DeleteArticleTask extends AsyncTask<Void, Void, Boolean> {
         }
         return res;
     }
+
+    //Async method executed when task finished, displaying feedback of the operation
     @Override
     public void onPostExecute(Boolean res){
         String text;

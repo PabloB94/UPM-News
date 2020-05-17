@@ -10,14 +10,18 @@ import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
 public class UploadArticleTask extends AsyncTask<Void, Void, Boolean> {
 
+    //Article created to upload to the server
     private Article upload;
+    //calling context of the app to perform callbacks
     private EditCreateForm context;
 
+    //Constructor of the async task
     public UploadArticleTask(EditCreateForm con,Article ok){
         this.upload=ok;
         this.context=con;
     }
 
+    //Async method executed
     @Override
     protected Boolean doInBackground(Void... voids) {
         boolean res= true;
@@ -29,6 +33,8 @@ public class UploadArticleTask extends AsyncTask<Void, Void, Boolean> {
         }
         return res;
     }
+
+    //Async method executed when task finished to display feedback of the operation
     @Override
     public void onPostExecute(Boolean res){
         if(res){
