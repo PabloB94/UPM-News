@@ -13,15 +13,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import es.upm.etsiinf.upmnews.model.Article;
+import es.upm.etsiinf.upmnews.utils.AdaptadorListaArticulos;
 import es.upm.etsiinf.upmnews.utils.async.LoadArticlesTask;
 import es.upm.etsiinf.upmnews.utils.async.LoginTask;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
@@ -35,10 +38,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     Boolean guardar = false;
     MainActivity main = this;
     public int offsetL = 0;
-    Menu barMenu;
     private Menu menu;
     private List<Article> articles;
-    private enum Topics {NATIONAL, INTERNATIONAL, ECONOMY, TECHNOLOGY, ALL};
+    private String topic = "All";
 
 
     @Override
@@ -155,29 +157,33 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
             case R.id.national:
                 menu.findItem(R.id.topicLabel).setTitle(R.string.national);
-                filterArticles(Topics.NATIONAL);
+                topic = "National";
+                filterArticles();
                 break;
-            case R.id.international:
-                menu.findItem(R.id.topicLabel).setTitle(R.string.international);
-                filterArticles(Topics.INTERNATIONAL);
+            case R.id.sports:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.sports);
+                topic = "Sports";
+                filterArticles();
                 break;
             case R.id.economy:
                 menu.findItem(R.id.topicLabel).setTitle(R.string.economy);
-                filterArticles(Topics.ECONOMY);
+                topic = "Economy";
+                filterArticles();
                 break;
             case R.id.technology:
                 menu.findItem(R.id.topicLabel).setTitle(R.string.technology);
-                filterArticles(Topics.TECHNOLOGY);
+                topic = "Technology";
+                filterArticles();
                 break;
             case R.id.all:
                 menu.findItem(R.id.topicLabel).setTitle(R.string.all);
-                filterArticles(Topics.ALL);
+                topic = "All";
+                filterArticles();
                 break;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
         return true;
     }
@@ -221,8 +227,16 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         this.articles = articles;
     }
 
-    private List<Article> filterArticles(Topics topic){
-        return null;
+    private void filterArticles(){
+        AdaptadorListaArticulos adapter = new AdaptadorListaArticulos(this, articles, ModelManager.isConnected());
+        adapter.filter(topic);
+        ListView listaArticulosView  = this.findViewById(R.id.listaArticulos);
+        listaArticulosView.setAdapter(adapter);
+    }
+
+    public Date getLastUpdate(){
+        if (articles != null && !articles.isEmpty()) return articles.get(0).getLastUpdate();
+        else return null;
     }
 
 }

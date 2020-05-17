@@ -25,8 +25,8 @@
         app:showAsAction="never"
         android:visible="true"/>
     <item
-        android:id="@+id/international"
-        android:title="@string/international"
+        android:id="@+id/sports"
+        android:title="@string/sports"
         app:showAsAction="never"
         android:visible="true"/>
     <item
