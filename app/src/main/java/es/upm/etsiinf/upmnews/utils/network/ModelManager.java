@@ -418,16 +418,16 @@ public class ModelManager {
     }
 
     //Function to check new articles on the server
-    public static List<Article> getUpdates(String date) throws ServerCommunicationError{
+    public static List<Article> getUpdates(String date) throws ServerCommunicationError {
 
         List<Article> result = new ArrayList<Article>();
-        try{
-            String parameters =  "";
+        try {
+            String parameters = "";
             String request = rc.serviceUrl + "articlesFrom/" + date;
 
             URL url = new URL(request);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            if(rc.requireSelfSigned)
+            if (rc.requireSelfSigned)
                 TrustModifier.relaxHostChecking(connection);
             //connection.setDoOutput(true);
             //connection.setDoInput(false);
@@ -437,25 +437,26 @@ public class ModelManager {
             connection.setRequestProperty("Authorization", getAuthTokenHeader());
             connection.setRequestProperty("charset", "utf-8");
             connection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
-            connection.setUseCaches (false);
+            connection.setUseCaches(false);
 
-            int HttpResult =connection.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK){
+            int HttpResult = connection.getResponseCode();
+            if (HttpResult == HttpURLConnection.HTTP_OK) {
                 String res = parseHttpStreamResult(connection);
                 List<JSONObject> objects = ServiceCallUtils.readRestResultFromList(res);
                 for (JSONObject jsonObject : objects) {
                     result.add(new Article(jsonObject));
                 }
-                Logger.log (Logger.INFO, objects.size() + " new Articles retrieved");
-            }else{
+                Logger.log(Logger.INFO, objects.size() + " new Articles retrieved");
+            } else {
                 throw new ServerCommunicationError(connection.getResponseMessage());
             }
         } catch (Exception e) {
-            Logger.log (Logger.ERROR, "Updating articles :" + e.getClass() + " ( "+e.getMessage() + ")");
-            throw new ServerCommunicationError(e.getClass() + " ( "+e.getMessage() + ")");
+            Logger.log(Logger.ERROR, "Updating articles :" + e.getClass() + " ( " + e.getMessage() + ")");
+            throw new ServerCommunicationError(e.getClass() + " ( " + e.getMessage() + ")");
         }
 
         return result;
+    }
 
     public static void logout(Context context){
         rc.clear();
