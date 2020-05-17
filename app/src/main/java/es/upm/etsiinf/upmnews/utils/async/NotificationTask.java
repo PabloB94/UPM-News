@@ -23,7 +23,6 @@ public class NotificationTask extends AsyncTask<Void, Void, List<Article>> {
         List<Article> res = null;
 
         try {
-            //llamada de model manager para buscar nuevos articulos
             res= ModelManager.getUpdates(checkDate);
             Log.w("NotificationTask", "New Articles: "+ res.size());
         } catch (ServerCommunicationError e) {

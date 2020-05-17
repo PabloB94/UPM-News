@@ -26,6 +26,7 @@ import java.io.InputStream;
 
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
+import es.upm.etsiinf.upmnews.utils.SerializationUtils;
 import es.upm.etsiinf.upmnews.utils.async.GetArticleDetails;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.async.UploadArticleTask;
@@ -55,7 +56,6 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
             @Override
             public void onClick(View v) {
                 Intent in = new Intent();
-                in.setType("image/*");
                 in.setType("*/*");
                 in.putExtra(Intent.EXTRA_MIME_TYPES,new String[]{"image/jpg","image/jpeg","image/png"});
                 in.setAction(Intent.ACTION_GET_CONTENT);
@@ -147,7 +147,8 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
     private void saveArticle(){
             Article upload = new Article(category,title, resume,body,subtitle,ModelManager.getIdUser());
             if(!articleImage.isEmpty()){
-                upload.addImage(articleImage,"Imagen chula del articulo");
+                upload.addImage(articleImage,"Image associated to this article");
+                upload.setThumbnail(SerializationUtils.createScaledStrImage(articleImage,160,90));
             }
             if(id>=0){
                 upload.setId(id);
