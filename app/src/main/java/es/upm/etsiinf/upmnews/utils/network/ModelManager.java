@@ -297,6 +297,12 @@ public class ModelManager {
 
         List<Article> result = new ArrayList<>();
         try {
+            if(rc==null){
+                Properties prop = new Properties();
+                prop.setProperty("service_url","https://sanger.dia.fi.upm.es/pmd-task/");
+                prop.setProperty("require_self_signed_cert","TRUE");
+                ModelManager.configureConnection(prop);
+            }
             String parameters = "";
             String request = rc.serviceUrl + "articlesFrom/" + date;
 
