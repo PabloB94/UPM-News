@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,15 +16,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Hashtable;
 
+import androidx.appcompat.widget.Toolbar;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
 import es.upm.etsiinf.upmnews.utils.async.GetArticleDetails;
+import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
 public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_screen);
+        Toolbar myToolbar = findViewById(R.id.appbarDets);
+        setSupportActionBar(myToolbar);
         Intent in = getIntent();
         String id = in.getStringExtra("id");
         GetArticleDetails task = new GetArticleDetails(this,id);
@@ -74,5 +80,12 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
 
     @Override
     public void processFinish(Boolean output) {}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.titlebar, menu);
+        return true;
+    }
 }
 

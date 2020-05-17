@@ -11,6 +11,16 @@
         android:orientation="vertical" >
 
         <TextView
+            android:id="@+id/loginTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/login"
+            android:textSize="30sp"
+            />
+
+        <TextView
             android:id="@+id/lbl_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,11 +57,20 @@
             android:inputType="textPassword"
             android:singleLine="true" />
 
+        <Switch
+            android:id="@+id/switchRemember"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/remember_me"
+            android:layout_marginTop="20dp"
+            android:colorAccent="@color/colorPrimary"
+            android:thumbTextPadding="50sp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dip"
+            android:layout_margin="20dip"
             android:orientation="horizontal"
             android:layout_gravity="center">
 
@@ -59,26 +78,28 @@
                 android:id="@+id/cancelDialogButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dip"
                 android:text="@string/cancel"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/round_button"
+                android:layout_margin="10dp"
+                android:elevation="6dp"
                 />
 
             <Button
                 android:id="@+id/loginDialogButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dip"
                 android:text="@string/login"
                 android:onClick="login"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/round_button"
+                android:layout_margin="10dp"
+                android:elevation="6dp"
                 />
 
         </LinearLayout>
 
-        <Switch
-            android:id="@+id/switchRemember"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Remember me" />
+
     </LinearLayout>
 
 </LinearLayout>
