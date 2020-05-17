@@ -163,9 +163,9 @@ public class Article extends ModelEntity {
 		return res;
 	}
 
+	//getters
 	public Date getLastUpdate(){
 		return lastUpdate;
 	}
-	public String getThumbnail(){ return this.thumbnail;}
 	public void setThumbnail(String scaled){this.thumbnail=scaled;}
 }

@@ -21,9 +21,10 @@ import androidx.core.content.ContextCompat;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
 import es.upm.etsiinf.upmnews.utils.async.GetArticleDetails;
-import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 
 public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
+
+    //creation of the class instantiating que upper bar and launching the async task
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +37,7 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
         task.execute();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
+    //auxiliary method to load all elements on the view
     public void loadElements(Article load){
         try{
             //load article elements on view
@@ -77,14 +74,17 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
         }
     }
 
+    //method called by the async task
     @Override
     public void processData(Article output) {
         loadElements(output);
     }
 
+    //empty method to fulfill the interface specification
     @Override
     public void processFinish(Boolean output) {}
 
+    //auxiliary method to configure the upper bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -92,6 +92,7 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
         return true;
     }
 
+    //auxiliary method to change the color of the category displayed
     private void setColor(String category, TextView label){
         switch (category){
             case "Sports":
