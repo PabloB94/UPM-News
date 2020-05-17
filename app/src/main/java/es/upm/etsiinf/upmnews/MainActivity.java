@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         ComponentName serviceComponent = new ComponentName(context, NotificationJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(0, serviceComponent);
         builder.setMinimumLatency(1*60000);
-        builder.setOverrideDeadline(2*60000);
+        builder.setOverrideDeadline(2*60000);//10 mins de intervalo
         builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
         builder.setPersisted(true);
         JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
