@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import java.util.List;
 
 import es.upm.etsiinf.upmnews.AsyncResponse;
@@ -65,16 +63,14 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
            else{
                loggedin = true;
            }
-            res = ModelManager.getArticles(6, context.offsetL);
-//            for (Article article : res) {
-//                // We print articles in Log
-//                Log.i(TAG, article.toString());/////////////////////////////////añadido toString, daba error
-//            }
+            res = ModelManager.getArticles(30, context.offsetL);
+
         } catch (ServerCommunicationError e) {
             Log.e(TAG,e.getMessage());
         }
         catch (AuthenticationError e) {
             Log.e(TAG, e.getMessage());
+            loggedin = false;
         }
 
         return res;
@@ -130,15 +126,17 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
                     }
                 }
                 if(lastFirstVisibleItem> firstVisibleItem){
-                    context.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
+                    if(loggedin) context.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
                 }
                 lastFirstVisibleItem=firstVisibleItem;
             }
         });
         }
         else{
-            context.findViewById(R.id.newArticleButton).setVisibility(View.GONE);
+            if(loggedin) context.findViewById(R.id.newArticleButton).setVisibility(View.GONE);
         }
+
+        context.setArticles(res);
     }
 
 

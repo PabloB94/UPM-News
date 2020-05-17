@@ -43,4 +43,15 @@
     <string name="login_error">Error logging in</string>
     <string name="delete_success">Article deleted successfully</string>
     <string name="delete_error">Error deleting article</string>
+    <string name="logout">Logout</string>
+    <string name="filter">Filter by category</string>
+    <string name="loging_out">Logging out...</string>
+    <string name="confirm_logout_title">Confirm logout</string>
+    <string name="logout_confirm">Are you sure you want to logout?</string>
+    <string name="technology">Technology</string>
+    <string name="national">National</string>
+    <string name="international">International</string>
+    <string name="economy">Economy</string>
+    <string name="all">All</string>
+    <string name="sports">Sports</string>
 </resources>

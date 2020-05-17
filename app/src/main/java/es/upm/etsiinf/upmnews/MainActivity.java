@@ -1,29 +1,44 @@
 package es.upm.etsiinf.upmnews;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.appcompat.widget.Toolbar;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.NotificationHelper;
 import es.upm.etsiinf.upmnews.utils.NotificationJobService;
+
+import es.upm.etsiinf.upmnews.utils.AdaptadorListaArticulos;
 import es.upm.etsiinf.upmnews.utils.async.LoadArticlesTask;
 import es.upm.etsiinf.upmnews.utils.async.LoginTask;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
     Bundle savedInstanceState;
@@ -31,12 +46,18 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     Boolean guardar = false;
     MainActivity main = this;
     public int offsetL = 0;
+    private Menu menu;
+    private List<Article> articles;
+    private String topic = "All";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_main);
+        Toolbar myToolbar = findViewById(R.id.appbar);
+        setSupportActionBar(myToolbar);
         Properties prop = new Properties();
         prop.setProperty("service_url","https://sanger.dia.fi.upm.es/pmd-task/");
         prop.setProperty("require_self_signed_cert","TRUE");
@@ -58,15 +79,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         Log.w("Notifications ","Created");
         //Configure the notifications
         NotificationHelper help = new NotificationHelper(this);
-
     }
 
     @Override
     public void processFinish(Boolean loginSuccess) {
         if(loginSuccess){
             refresh();
-            this.findViewById(R.id.loginButton).setVisibility(View.GONE);
-            this.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
+            this.findViewById(R.id.loginButton).setVisibility(GONE);
+            this.findViewById(R.id.newArticleButton).setVisibility(VISIBLE);
         }
     }
 
@@ -139,6 +159,108 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         task.loggedin = ModelManager.isConnected();
         this.offsetL = 0;
         task.execute();
-
+        MenuItem logout = null;
+        if (menu != null) logout = menu.findItem(R.id.logout);
+        if (ModelManager.isConnected()) {
+            this.findViewById(R.id.loginButton).setVisibility(GONE);
+            this.findViewById(R.id.newArticleButton).setVisibility(VISIBLE);
+            if (logout != null) logout.setVisible(true);
+        }else{
+            this.findViewById(R.id.newArticleButton).setVisibility(GONE);
+            this.findViewById(R.id.loginButton).setVisibility(VISIBLE);
+            if (logout != null) logout.setVisible(false);
+        }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                logout();
+                return true;
+
+            case R.id.national:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.national);
+                topic = "National";
+                filterArticles();
+                break;
+            case R.id.sports:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.sports);
+                topic = "Sports";
+                filterArticles();
+                break;
+            case R.id.economy:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.economy);
+                topic = "Economy";
+                filterArticles();
+                break;
+            case R.id.technology:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.technology);
+                topic = "Technology";
+                filterArticles();
+                break;
+            case R.id.all:
+                menu.findItem(R.id.topicLabel).setTitle(R.string.all);
+                topic = "All";
+                filterArticles();
+                break;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+
+    private void logout(){
+        AlertDialog.Builder logoutDialog = new AlertDialog.Builder(context);
+        logoutDialog.setTitle(R.string.confirm_logout_title);
+        logoutDialog.setMessage(R.string.logout_confirm);
+        logoutDialog.setIcon(R.drawable.logout_black);
+        logoutDialog.setPositiveButton(R.string.yes,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast toast = Toast.makeText(context, R.string.loging_out, Toast.LENGTH_SHORT);
+                        toast.show();
+                        ModelManager.logout(context);
+                        refresh();
+                    }
+                });
+        logoutDialog.setNegativeButton(R.string.no,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        logoutDialog.show();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.appbar, menu);
+        this.menu = menu;
+        menu.findItem(R.id.logout).setVisible(ModelManager.isConnected());
+        refresh();
+        return true;
+    }
+
+    public void setArticles(List<Article> articles){
+        this.articles = articles;
+    }
+
+    private void filterArticles(){
+        AdaptadorListaArticulos adapter = new AdaptadorListaArticulos(this, articles, ModelManager.isConnected());
+        adapter.filter(topic);
+        ListView listaArticulosView  = this.findViewById(R.id.listaArticulos);
+        listaArticulosView.setAdapter(adapter);
+    }
+
+    public Date getLastUpdate(){
+        if (articles != null && !articles.isEmpty()) return articles.get(0).getLastUpdate();
+        else return null;
+    }
+
 }

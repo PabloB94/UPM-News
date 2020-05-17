@@ -162,4 +162,8 @@ public class Article extends ModelEntity {
 		res.put("lastUpdate",SerializationUtils.dateToString(lastUpdate));
 		return res;
 	}
+
+	public Date getLastUpdate(){
+		return lastUpdate;
+	}
 }

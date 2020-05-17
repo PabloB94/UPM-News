@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.upm.etsiinf.upmnews.DetailsScreen;
@@ -32,6 +33,7 @@ public class AdaptadorListaArticulos extends BaseAdapter {
     private List<Article> datos;
     private static LayoutInflater inflater = null;
     private Boolean visibleExtras = false;
+    private String topic = "All";
 
     public AdaptadorListaArticulos(Context context, List<Article> datos, Boolean loggedin){
         this.context = context;
@@ -39,6 +41,7 @@ public class AdaptadorListaArticulos extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         this.visibleExtras = loggedin;
     }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
@@ -151,4 +154,15 @@ public class AdaptadorListaArticulos extends BaseAdapter {
         this.datos = nuevosDatos;
     }
 
+    public void filter(String topic) {
+        List<Article> filtered = new ArrayList<>();
+        if(!topic.equals("All")){
+            for (Article article : datos) {
+                if (article.getCategory().equals(topic)) {
+                    filtered.add(article);
+                }
+            }
+            datos = filtered;
+        }
+    }
 }
