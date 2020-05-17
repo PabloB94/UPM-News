@@ -24,14 +24,12 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import es.upm.etsiinf.upmnews.model.Article;
-import es.upm.etsiinf.upmnews.utils.NotificationHelper;
 import es.upm.etsiinf.upmnews.utils.NotificationJobService;
 
 import es.upm.etsiinf.upmnews.utils.AdaptadorListaArticulos;
@@ -65,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         prop.setProperty("service_url","https://sanger.dia.fi.upm.es/pmd-task/");
         prop.setProperty("require_self_signed_cert","TRUE");
         ModelManager.configureConnection(prop);
-        //refresh();
         scheduleNotifications();
 
     }
@@ -84,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void processFinish(Boolean loginSuccess) {
+        //When adapter is finished
         if(loginSuccess){
             refresh();
             this.findViewById(R.id.loginButton).setVisibility(GONE);
@@ -98,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     public void callLoginDialog(View view)
     {
+        //Go to login dialog
         final Dialog myDialog = new Dialog(this);
         myDialog.setContentView(R.layout.login_popup);
         myDialog.setCancelable(false);
@@ -138,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     public void newArticle(View v) {
+        //Go to new article view
         Intent editArticle = new Intent(context, EditCreateForm.class);
         editArticle.putExtra( "id", "-1");
         context.startActivity(editArticle);
@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public void onResume() {
         super.onResume();
+        //Refresh the list of articles
         refresh();
     }
 
@@ -155,18 +156,23 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     public void refresh() {
+        //New task to get new list of articles
         LoadArticlesTask task = new LoadArticlesTask(this);
         task.delegate = this;
         task.loggedin = ModelManager.isConnected();
         this.offsetL = 0;
         task.execute();
         MenuItem logout = null;
+        //Find item menu
         if (menu != null) logout = menu.findItem(R.id.logout);
+
         if (ModelManager.isConnected()) {
+            //If is connected set visibility to new article button
             this.findViewById(R.id.loginButton).setVisibility(GONE);
             this.findViewById(R.id.newArticleButton).setVisibility(VISIBLE);
             if (logout != null) logout.setVisible(true);
         }else{
+            //If is connected set visibility to login button
             this.findViewById(R.id.newArticleButton).setVisibility(GONE);
             this.findViewById(R.id.loginButton).setVisibility(VISIBLE);
             if (logout != null) logout.setVisible(false);
@@ -176,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //Get option selected
         switch (item.getItemId()) {
             case R.id.logout:
                 logout();
@@ -216,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
 
     private void logout(){
+        //Log out
         AlertDialog.Builder logoutDialog = new AlertDialog.Builder(context);
         logoutDialog.setTitle(R.string.confirm_logout_title);
         logoutDialog.setMessage(R.string.logout_confirm);
@@ -241,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //inflate menu buttons in app bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.appbar, menu);
         this.menu = menu;
@@ -253,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     private void filterArticles(){
+        //filter articles with topic
         AdaptadorListaArticulos adapter = new AdaptadorListaArticulos(this, articles, ModelManager.isConnected());
         adapter.filter(topic);
         ListView listaArticulosView  = this.findViewById(R.id.listaArticulos);
@@ -260,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     private void saveLastUpdate(){
+        //Save the last article update
         if (articles != null && !articles.isEmpty()){
             SharedPreferences preferencia = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = preferencia.edit();
