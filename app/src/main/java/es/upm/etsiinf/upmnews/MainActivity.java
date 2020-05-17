@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void processData(Article output) {
+        //Not needed here, but implemented for the interface.
     }
 
     public void callLoginDialog(View view)
