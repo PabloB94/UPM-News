@@ -35,7 +35,9 @@ import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.async.UploadArticleTask;
 
 public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
+    //variable os the photo selector
     private static final int SELECT_PHOTO = 1;
+    //Elements of the form
     private String title;
     private String subtitle;
     private String resume;
@@ -44,6 +46,7 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
     private String articleImage="";
     private int id;
 
+    //creation of the class that discriminates if its edit or create and create the buttons listeners
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +110,7 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
     }
 
 
+    //photo selector activity on result executes this method
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -134,6 +138,7 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         }
     }
 
+    //auxiliary method to check if all the mandatory fields are filled
     private boolean checkFields(){
         boolean res =true;
         title = ((EditText)findViewById(R.id.newTitle)).getText().toString();
@@ -148,6 +153,7 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         return res;
     }
 
+    //method that creates the async task with the formed article
     private void saveArticle(){
             Article upload = new Article(category,title, resume,body,subtitle,ModelManager.getIdUser());
             if(!articleImage.isEmpty()){
@@ -162,6 +168,7 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
 
     }
 
+    //auxiliary method to save the photo
     private void loadImage(Bitmap photo){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         photo.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -169,6 +176,7 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         articleImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
+    //okay dialog
     public void saveOk(){
         AlertDialog.Builder ok = new AlertDialog.Builder(EditCreateForm.this);
         ok.setTitle(R.string.article_saved_title);
@@ -182,6 +190,7 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         okMessage.show();
     }
 
+    //error dialog
     public void saveFail(){
         AlertDialog.Builder ok = new AlertDialog.Builder(EditCreateForm.this);
         ok.setTitle(R.string.upload_error);
@@ -191,6 +200,7 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         okMessage.show();
     }
 
+    //method to clean image selection
     public void cleanImage(){
         articleImage="";
         ImageView show = findViewById(R.id.imageShow);
@@ -198,10 +208,13 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
 
     }
 
+    //method to retrieve the specific data from the article selected to edit
     private void getData(String id){
         GetArticleDetails task = new GetArticleDetails(this,id);
         task.execute();
     }
+
+    //method called by the async task on finish when details retrieved
     @Override
     public void processData(Article output) {
         EditText title =findViewById(R.id.newTitle);
@@ -224,6 +237,7 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         }
     }
 
+    //auxiliary method to work with the category selector
     private int getIndex(Spinner spinner, String myString){
         for (int i=0;i<spinner.getCount();i++){
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
@@ -233,15 +247,18 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
         return 0;
     }
 
+    //auxiliary method to generate the photo bitmap
     private Bitmap getPhoto(Image img){
         String imgbase64 = img.getImage();
         byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
+    //empty method to fulfill interface
     @Override
     public void processFinish(Boolean output) {  }
 
+    //auxiliary method to configure the upper bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
