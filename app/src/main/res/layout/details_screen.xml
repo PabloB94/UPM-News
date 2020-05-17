@@ -1,76 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailsLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     tools:context=".DetailsScreen">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/appbarDets"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <RelativeLayout
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="#FFFFFF"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:elevation="4dp"/>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/categoryShow"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp" />
-
-    <TextView
-        android:id="@+id/titleShow"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/categoryShow" />
-
-    <TextView
-        android:id="@+id/subtitleShow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleShow"
-        android:layout_marginTop="5dp"/>
-
-        <TextView
-            android:id="@+id/abstractShow"
-            android:layout_width="wrap_content"
+        android:fillViewport="true"
+        tools:context=".DetailsScreen">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/subtitleShow"
-            android:layout_marginTop="10dp"
-            android:autoLink="all" />
-        <ImageView
-            android:id="@+id/imageShow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/abstractShow"
-            tools:srcCompat="@drawable/ic_launcher_foreground" />
+            android:orientation="vertical"
+            android:padding="6dip"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp">
 
-    <TextView
-        android:id="@+id/bodyShow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageShow"
-        android:layout_marginBottom="5dp"
-        android:autoLink="all" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/footnoteNameShow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bodyShow"
-        android:layout_toStartOf="@+id/footnoteDateShow"
-        android:layout_marginEnd="15dp"/>
+                <TextView
+                    android:id="@+id/titleShow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="0dp"
+                    android:layout_weight="9"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/footnoteDateShow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bodyShow"
-        android:layout_alignParentEnd="true" />
-    </RelativeLayout>
-    </LinearLayout>
-</ScrollView>
+                <TextView
+                    android:id="@+id/categoryShow"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="4"
+                    android:gravity="end"
+                    android:textSize="20sp"
+                    android:layout_width="0dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/subtitleShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/abstractShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:autoLink="all"/>
+
+            <ImageView
+                android:id="@+id/imageShow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/image"
+                android:padding="15dp"/>
+
+            <TextView
+                android:id="@+id/bodyShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:autoLink="all"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/footnoteNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:text="@string/written_by"/>
+                <TextView
+                    android:id="@+id/footnoteNameShow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_weight="6"/>
+
+                <TextView
+                    android:id="@+id/footnoteDateShow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:layout_weight="6"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

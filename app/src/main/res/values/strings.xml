@@ -54,4 +54,6 @@
     <string name="economy">Economy</string>
     <string name="all">All</string>
     <string name="sports">Sports</string>
+    <string name="written_by">Written by:</string>
+    <string name="remember_me">"Remember me        "</string>
 </resources>

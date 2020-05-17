@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import androidx.appcompat.widget.Toolbar;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
 import es.upm.etsiinf.upmnews.utils.SerializationUtils;
@@ -45,6 +48,8 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editcreate_form);
+        Toolbar myToolbar = findViewById(R.id.appbarDets);
+        setSupportActionBar(myToolbar);
         Intent in = getIntent();
         String inId = in.getStringExtra("id");
         id = Integer.parseInt(inId);
@@ -99,7 +104,6 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
                 }
             }
         });
-
     }
 
 
@@ -237,5 +241,12 @@ public class EditCreateForm extends AppCompatActivity implements AsyncResponse{
 
     @Override
     public void processFinish(Boolean output) {  }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.titlebar, menu);
+        return true;
+    }
 
 }
