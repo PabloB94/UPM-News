@@ -95,9 +95,11 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
         }
 
         adaptador = new AdaptadorListaArticulos(context,res,loggedin);
+        adaptador.filter(context.getTopic());
         listaArticulosView.setAdapter(adaptador);
 
         if(tamanioAntiguo != 0 && tamanioAntiguo != listaArticulos.size()){
+            context.offsetL = res.size();
             listaArticulosView.onRestoreInstanceState(state);
         }
 
@@ -115,7 +117,7 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
 
                 if(lastFirstVisibleItem<firstVisibleItem){
                     if(firstVisibleItem + visibleItemCount >= totalItemCount){
-                        context.offsetL = firstVisibleItem + visibleItemCount;
+                        //context.offsetL = firstVisibleItem + visibleItemCount;
 
                         LoadArticlesTask task = new LoadArticlesTask(context);
                         task.delegate = context;
@@ -131,12 +133,13 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
                 lastFirstVisibleItem=firstVisibleItem;
             }
         });
+        context.setArticles(res);
         }
         else{
             if(loggedin) context.findViewById(R.id.newArticleButton).setVisibility(View.GONE);
         }
 
-        context.setArticles(res);
+
     }
 
 

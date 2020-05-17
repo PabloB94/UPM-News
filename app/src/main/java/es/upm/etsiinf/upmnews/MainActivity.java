@@ -264,4 +264,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         else return null;
     }
 
+    public String getTopic(){
+        return this.topic;
+    }
+
 }
