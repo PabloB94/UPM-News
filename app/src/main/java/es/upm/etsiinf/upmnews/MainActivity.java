@@ -8,7 +8,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import android.view.Menu;
@@ -33,6 +35,7 @@ import es.upm.etsiinf.upmnews.utils.NotificationHelper;
 import es.upm.etsiinf.upmnews.utils.NotificationJobService;
 
 import es.upm.etsiinf.upmnews.utils.AdaptadorListaArticulos;
+import es.upm.etsiinf.upmnews.utils.SerializationUtils;
 import es.upm.etsiinf.upmnews.utils.async.LoadArticlesTask;
 import es.upm.etsiinf.upmnews.utils.async.LoginTask;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
@@ -70,15 +73,13 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private void scheduleNotifications(){
         ComponentName serviceComponent = new ComponentName(context, NotificationJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(0, serviceComponent);
-        builder.setMinimumLatency(1*60000);
-        builder.setOverrideDeadline(2*60000);//10 mins de intervalo
+        builder.setMinimumLatency(5*60000);//5mins de intervalo minimo
+        builder.setOverrideDeadline(10*60000);//10 mins de intervalo final
         builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
         builder.setPersisted(true);
         JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
         jobScheduler.schedule(builder.build());
         Log.w("Notifications ","Created");
-        //Configure the notifications
-        NotificationHelper help = new NotificationHelper(this);
     }
 
     @Override
@@ -171,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             this.findViewById(R.id.loginButton).setVisibility(VISIBLE);
             if (logout != null) logout.setVisible(false);
         }
+        saveLastUpdate();
     }
 
     @Override
@@ -259,9 +261,13 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         listaArticulosView.setAdapter(adapter);
     }
 
-    public Date getLastUpdate(){
-        if (articles != null && !articles.isEmpty()) return articles.get(0).getLastUpdate();
-        else return null;
+    private void saveLastUpdate(){
+        if (articles != null && !articles.isEmpty()){
+            SharedPreferences preferencia = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = preferencia.edit();
+            editor.putString("date", SerializationUtils.dateToString(articles.get(0).getLastUpdate()));
+            editor.apply();
+        }
     }
 
     public String getTopic(){
