@@ -19,7 +19,6 @@
             android:layout_weight="9"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:text="Hola"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -33,7 +32,6 @@
             android:layout_weight="4"
             android:gravity="end"
             android:textSize="14sp"
-            android:text="Hola"
             android:layout_width="0dp" />
     </LinearLayout>
 
@@ -47,7 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginEnd="6dip"
-            android:src="@drawable/ic_launcher_foreground"
+            android:src="@drawable/image"
             android:layout_weight="5"
             />
 
@@ -58,7 +56,6 @@
             android:layout_marginTop="3dp"
             android:layout_weight="7"
             android:maxLines="5"
-            android:text="@string/article_abstract"
             android:textSize="12sp" />
 
     </LinearLayout>

@@ -15,8 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_marginEnd="6dip"
-            android:contentDescription="TODO"
-            android:src="@drawable/ic_launcher_foreground" />
+            android:src="@drawable/image" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -31,7 +30,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="0dp"
                     android:gravity="center_vertical"
-                    android:text="Article Title"
                     android:textSize="16sp" />
 
                 <TextView
@@ -42,14 +40,12 @@
                     android:layout_marginEnd="1dp"
                     android:layout_marginTop="0dp"
                     android:gravity="end"
-                    android:text="Category"
                     android:textSize="14sp" />
             </LinearLayout>
             <TextView
                 android:id="@+id/abstractTV"
                 android:layout_width="fill_parent"
                 android:layout_height="45dip"
-                android:text="@string/article_abstract"
                 android:textSize="12sp"
                 android:maxLines="3"/>
 
