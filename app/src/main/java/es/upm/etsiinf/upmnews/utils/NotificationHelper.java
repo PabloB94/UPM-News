@@ -9,7 +9,6 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import es.upm.etsiinf.upmnews.MainActivity;
 import es.upm.etsiinf.upmnews.R;
 
