@@ -67,6 +67,8 @@ public class AdaptadorListaArticulos extends BaseAdapter {
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 Bitmap scaledImage = createScaledImage(decodedByte,2000,2000);
                 image.setImageBitmap(scaledImage);
+            }else{
+                image.setVisibility(View.GONE);
             }
 
         view.setTag(this.datos.get(i).getId());
