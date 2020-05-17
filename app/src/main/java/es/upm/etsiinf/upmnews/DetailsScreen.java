@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Hashtable;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.model.Image;
 import es.upm.etsiinf.upmnews.utils.async.GetArticleDetails;
@@ -54,7 +55,10 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
 
             Hashtable<String,String> elems= load.getAttributes();
 
-            cat.setText(elems.get("category"));
+            String category = elems.get("category");
+            cat.setText(category);
+            setColor(category, cat);
+
             title.setText(elems.get("title"));
             subtitle.setText(Html.fromHtml(elems.get("subtitle"),Html.FROM_HTML_MODE_COMPACT));
             resume.setText(Html.fromHtml(elems.get("abstract"),Html.FROM_HTML_MODE_COMPACT));
@@ -86,6 +90,23 @@ public class DetailsScreen extends AppCompatActivity implements AsyncResponse{
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.titlebar, menu);
         return true;
+    }
+
+    private void setColor(String category, TextView label){
+        switch (category){
+            case "Sports":
+                label.setBackgroundColor(ContextCompat.getColor(this,R.color.Sports));
+                break;
+            case "National":
+                label.setBackgroundColor(ContextCompat.getColor(this,R.color.National));
+                break;
+            case "Economy":
+                label.setBackgroundColor(ContextCompat.getColor(this,R.color.Economy));
+                break;
+            case "Technology":
+                label.setBackgroundColor(ContextCompat.getColor(this,R.color.Technology));
+                break;
+        }
     }
 }
 

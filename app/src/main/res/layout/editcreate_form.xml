@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorPrimary"
-        app:titleTextColor="#FFFFFF"
+        app:titleTextColor="@color/white"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         android:elevation="4dp"/>
@@ -35,7 +35,8 @@
                 android:text="@string/edit_article"
                 android:textStyle="bold"
                 android:textSize="30sp"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:padding="12dp"/>
 
             <TextView
                 android:id="@+id/titleLabel"
@@ -128,9 +129,8 @@
                 <ImageView
                     android:id="@+id/imageShow"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    app:srcCompat="@drawable/image" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="8" />
 
 
                 <Button
@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/button_photo"
                     android:padding="5dp"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:background="@drawable/round_button"
                     android:layout_margin="10dp"
                     android:elevation="6dp"
@@ -175,7 +175,7 @@
                     android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
                     android:text="@string/button_cancel"
                     android:layout_alignParentStart="true"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:background="@drawable/round_button"
                     android:paddingEnd="9dp"
                     android:layout_weight="6"
@@ -189,8 +189,7 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@android:drawable/ic_menu_save"
                     android:text="@string/button_save"
-                    android:layout_alignParentEnd="true"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:background="@drawable/round_button"
                     android:padding="5dp"
                     android:layout_weight="6"

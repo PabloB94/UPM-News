@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.text.Html;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -14,12 +15,12 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
 import es.upm.etsiinf.upmnews.DetailsScreen;
 import es.upm.etsiinf.upmnews.EditCreateForm;
 import es.upm.etsiinf.upmnews.R;
@@ -58,7 +59,9 @@ public class AdaptadorListaArticulos extends BaseAdapter {
         TextView resumen = view.findViewById(R.id.abstractTV);
         resumen.setText(Html.fromHtml(this.datos.get(i).getAbstractText(),Html.FROM_HTML_MODE_COMPACT));
         TextView categoria = view.findViewById(R.id.categoryTV);
-        categoria.setText(this.datos.get(i).getCategory());
+        String category = this.datos.get(i).getCategory();
+        categoria.setText(category);
+        setColor(category, categoria);
 
            ImageView image = view.findViewById(R.id.articuloImageView);;
            Image img = this.datos.get(i).getImage();
@@ -67,6 +70,9 @@ public class AdaptadorListaArticulos extends BaseAdapter {
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 Bitmap scaledImage = createScaledImage(decodedByte,2000,2000);
                 image.setImageBitmap(scaledImage);
+                image.setVisibility(View.VISIBLE);
+            }else{
+                image.setVisibility(View.INVISIBLE);
             }
 
         view.setTag(this.datos.get(i).getId());
@@ -160,4 +166,22 @@ public class AdaptadorListaArticulos extends BaseAdapter {
             datos = filtered;
         }
     }
+
+    private void setColor(String category, TextView label){
+        switch (category){
+            case "Sports":
+                label.setBackgroundColor(ContextCompat.getColor(context,R.color.Sports));
+                break;
+            case "National":
+                label.setBackgroundColor(ContextCompat.getColor(context,R.color.National));
+                break;
+            case "Economy":
+                label.setBackgroundColor(ContextCompat.getColor(context,R.color.Economy));
+                break;
+            case "Technology":
+                label.setBackgroundColor(ContextCompat.getColor(context,R.color.Technology));
+                break;
+        }
+    }
+
 }
