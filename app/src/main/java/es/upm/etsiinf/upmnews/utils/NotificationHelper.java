@@ -70,36 +70,4 @@ public class NotificationHelper extends ContextWrapper {
         }
         return manager;
     }
-
-    ///////////////////////// ESTO CREO DE AQUI ABAJO ES LO QUE REALMENTE HAY QUE HACER PERO
-    //////////////////////// NO ESTOY SEGURO
-    /*public class MainActivity extends AppCompatActivity {
-        NotificationCompat.Builder mBuilder;
-        private final String DEFAULT_CHANNEL = "DEFAULT_CHANNEL";
-        public static final String DEFAULT_CHANNEL_ID = "1";
-
-
-        @Override
-        protected void onCreate(Bundle savedIntanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.Layout.activity_main);
-
-
-            mBuilder = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_news)
-                    .setContentTitle("UPM_NEWS")
-            //.setContextText("Tienes 1 mensaje")
-
-            // Activity que se lanza al hacer click la notificación
-            Intent resultIntent = new Intent(this, ResultActivity.class); // ResultActivity como ejemplo
-
-            // no need to create an artificial back state
-            PendindIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-.
-            mBuilder.setContentIntent(resultPendingIntent);
-
-            NotificacionManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            mNotifyMgr.notify(DEFAULT_CHANNEL_ID, mBuilder.build());
-        }
-    } */
 }
