@@ -4,24 +4,35 @@ package es.upm.etsiinf.upmnews.utils.network;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.io.IOException;
+import org.json.simple.JSONObject;
+
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import org.json.simple.JSONObject;
 
 import es.upm.etsiinf.upmnews.model.Article;
-import es.upm.etsiinf.upmnews.model.Image;
-import es.upm.etsiinf.upmnews.utils.network.exceptions.AuthenticationError;
 import es.upm.etsiinf.upmnews.utils.Logger;
+import es.upm.etsiinf.upmnews.utils.network.exceptions.AuthenticationError;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 
 import static es.upm.etsiinf.upmnews.utils.network.ServiceCallUtils.parseHttpStreamResult;
 
 public class ModelManager {
+
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String CONTENTTYPE = "Content-Type";
+    private static final String CHARSET = "charset";
+    private static final String URLENCODED = "application/x-www-form-urlencoded";
+    private static final String UTF8 = "utf-8";
+    private static final String CONTENTLENGTH = "Content-Length";
+
+
+    private ModelManager(){
+        throw new IllegalStateException("Utility Class");
+    }
+
     private static RESTConnection rc = null;
 
     public static boolean isConnected(){
@@ -65,7 +76,6 @@ public class ModelManager {
     public static void login(String username, String password) throws AuthenticationError{
         String res = "";
         try{
-            String parameters =  "";
             String request = rc.serviceUrl + "login";
 
             URL url = new URL(request);
@@ -76,9 +86,8 @@ public class ModelManager {
             connection.setDoInput(true);
             connection.setInstanceFollowRedirects(false);
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("charset", "utf-8");
-            //connection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
+            connection.setRequestProperty(CONTENTTYPE, "application/json");
+            connection.setRequestProperty(CHARSET, UTF8);
             connection.setUseCaches (false);
 
             JSONObject jsonParam = new JSONObject();
@@ -87,13 +96,13 @@ public class ModelManager {
 
             ServiceCallUtils.writeJSONParams(connection, jsonParam);
 
-            int HttpResult =connection.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK){
+            int httpResult =connection.getResponseCode();
+            if(httpResult ==HttpURLConnection.HTTP_OK){
                 res = parseHttpStreamResult(connection);
 
                 JSONObject userJsonObject = ServiceCallUtils.readRestResultFromSingle(res);
                 rc.idUser = userJsonObject.get("user").toString();
-                rc.authType = userJsonObject.get("Authorization").toString();
+                rc.authType = userJsonObject.get(AUTHORIZATION).toString();
                 rc.apikey = userJsonObject.get("apikey").toString();
                 rc.isAdministrator = userJsonObject.containsKey("administrator");
             }else{
@@ -101,16 +110,7 @@ public class ModelManager {
 
                 throw new AuthenticationError(connection.getResponseMessage());
             }
-        } catch (MalformedURLException e) {
-            //e.printStackTrace();
-            throw new AuthenticationError(e.getMessage());
-        }
-        catch (IOException e) {
-            //e.printStackTrace();
-            throw new AuthenticationError(e.getMessage());
-        }
-        catch (Exception e) {
-            //e.printStackTrace();
+        } catch (Exception e) {
             throw new AuthenticationError(e.getMessage());
         }
     }
@@ -128,8 +128,7 @@ public class ModelManager {
      * @return auth token header for user logged in
      */
     private static String getAuthTokenHeader(){
-        String authHeader = rc.authType + " apikey=" + rc.apikey;
-        return authHeader;
+        return rc.authType + " apikey=" + rc.apikey;
     }
 
     /**
@@ -152,76 +151,24 @@ public class ModelManager {
             limits = "/"+buffer+"/"+offset;
         }
 
-        List<Article> result = new ArrayList<Article>();
+        List<Article> result = new ArrayList<>();
         try{
             String parameters =  "";
             String request = rc.serviceUrl + "articles" + limits;
 
             URL url = new URL(request);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            if(rc.requireSelfSigned)
-                TrustModifier.relaxHostChecking(connection);
-            //connection.setDoOutput(true);
-            //connection.setDoInput(false);
+            if(rc.requireSelfSigned) TrustModifier.relaxHostChecking(connection);
             connection.setInstanceFollowRedirects(false);
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            connection.setRequestProperty("Authorization", getAuthTokenHeader());
-            connection.setRequestProperty("charset", "utf-8");
-            connection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
+            connection.setRequestProperty(CONTENTTYPE, URLENCODED);
+            connection.setRequestProperty(AUTHORIZATION, getAuthTokenHeader());
+            connection.setRequestProperty(CHARSET, UTF8);
+            connection.setRequestProperty(CONTENTLENGTH, "" + Integer.toString(parameters.getBytes().length));
             connection.setUseCaches (false);
 
-            int HttpResult =connection.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK){
-                String res = parseHttpStreamResult(connection);
-                List<JSONObject> objects = ServiceCallUtils.readRestResultFromList(res);
-                for (JSONObject jsonObject : objects) {
-                    result.add(new Article(jsonObject));
-                }
-                Logger.log (Logger.INFO, objects.size() + " objects (Article) retrieved");
-            }else{
-                throw new ServerCommunicationError(connection.getResponseMessage());
-            }
-        } catch (Exception e) {
-            Logger.log (Logger.ERROR, "Listing articles :" + e.getClass() + " ( "+e.getMessage() + ")");
-            throw new ServerCommunicationError(e.getClass() + " ( "+e.getMessage() + ")");
-        }
-
-        return result;
-    }
-
-    /**
-     *
-     * @return the list of articles in remote service with pagination
-     * @throws ServerCommunicationError
-     */
-    public static List<Article> getArticlesFrom(int buffer, int offset) throws ServerCommunicationError{
-        String limits = "";
-        if (buffer>0 && offset >=0){
-            limits = "/"+buffer+"/"+offset;
-        }
-
-        List<Article> result = new ArrayList<Article>();
-        try{
-            String parameters =  "";
-            String request = rc.serviceUrl + "articles" + limits;
-
-            URL url = new URL(request);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            if(rc.requireSelfSigned)
-                TrustModifier.relaxHostChecking(connection);
-            //connection.setDoOutput(true);
-            //connection.setDoInput(false);
-            connection.setInstanceFollowRedirects(false);
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            connection.setRequestProperty("Authorization", getAuthTokenHeader());
-            connection.setRequestProperty("charset", "utf-8");
-            connection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
-            connection.setUseCaches (false);
-
-            int HttpResult =connection.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK){
+            int httpResult =connection.getResponseCode();
+            if(httpResult ==HttpURLConnection.HTTP_OK){
                 String res = parseHttpStreamResult(connection);
                 List<JSONObject> objects = ServiceCallUtils.readRestResultFromList(res);
                 for (JSONObject jsonObject : objects) {
@@ -253,20 +200,17 @@ public class ModelManager {
 
             URL url = new URL(request);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            if(rc.requireSelfSigned)
-                TrustModifier.relaxHostChecking(connection);
-            //connection.setDoOutput(true);
-            //connection.setDoInput(false);
+            if(rc.requireSelfSigned) TrustModifier.relaxHostChecking(connection);
             connection.setInstanceFollowRedirects(false);
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            connection.setRequestProperty("Authorization", getAuthTokenHeader());
-            connection.setRequestProperty("charset", "utf-8");
-            connection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
+            connection.setRequestProperty(CONTENTTYPE, URLENCODED);
+            connection.setRequestProperty(AUTHORIZATION, getAuthTokenHeader());
+            connection.setRequestProperty(CHARSET, UTF8);
+            connection.setRequestProperty(CONTENTLENGTH, "" + Integer.toString(parameters.getBytes().length));
             connection.setUseCaches (false);
 
-            int HttpResult =connection.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK){
+            int httpResult =connection.getResponseCode();
+            if(httpResult ==HttpURLConnection.HTTP_OK){
                 String res = parseHttpStreamResult(connection);
                 JSONObject object = ServiceCallUtils.readRestResultFromGetObject(res);
                 result = new Article(object);
@@ -284,7 +228,6 @@ public class ModelManager {
 
     public static int saveArticle(Article a) throws ServerCommunicationError{
         try{
-            String parameters =  "";
             String request = rc.serviceUrl + "article";
 
             URL url = new URL(request);
@@ -295,15 +238,15 @@ public class ModelManager {
             connection.setDoInput(true);
             connection.setInstanceFollowRedirects(false);
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Authorization", getAuthTokenHeader());
-            connection.setRequestProperty("charset", "utf-8");
+            connection.setRequestProperty(CONTENTTYPE, "application/json");
+            connection.setRequestProperty(AUTHORIZATION, getAuthTokenHeader());
+            connection.setRequestProperty(CHARSET, UTF8);
             connection.setUseCaches (false);
 
             ServiceCallUtils.writeJSONParams(connection, a.toJSON());
 
-            int HttpResult =connection.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK){
+            int httpResult =connection.getResponseCode();
+            if(httpResult ==HttpURLConnection.HTTP_OK){
                 String res = parseHttpStreamResult(connection);
                 // get id from status ok when saved
                 int id = ServiceCallUtils.readRestResultFromInsert(res);
@@ -331,15 +274,15 @@ public class ModelManager {
             connection.setDoInput(true);
             connection.setInstanceFollowRedirects(false);
             connection.setRequestMethod("DELETE");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            connection.setRequestProperty("Authorization", getAuthTokenHeader());
-            connection.setRequestProperty("charset", "utf-8");
-            connection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
+            connection.setRequestProperty(CONTENTTYPE, "application/x-www-form-urlencoded; charset=UTF-8");
+            connection.setRequestProperty(AUTHORIZATION, getAuthTokenHeader());
+            connection.setRequestProperty(CHARSET, UTF8);
+            connection.setRequestProperty(CONTENTLENGTH, "" + Integer.toString(parameters.getBytes().length));
             connection.setUseCaches (false);
 
-            int HttpResult =connection.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK  || HttpResult ==HttpURLConnection.HTTP_NO_CONTENT){
-                Logger.log (Logger.INFO,"Article (id:"+idArticle+") deleted with status "+HttpResult+":"+parseHttpStreamResult(connection));
+            int httpResult =connection.getResponseCode();
+            if(httpResult ==HttpURLConnection.HTTP_OK  || httpResult ==HttpURLConnection.HTTP_NO_CONTENT){
+                Logger.log (Logger.INFO,"Article (id:"+idArticle+") deleted with status "+httpResult+":"+parseHttpStreamResult(connection));
             }else{
                 throw new ServerCommunicationError(connection.getResponseMessage());
             }
@@ -349,98 +292,27 @@ public class ModelManager {
         }
     }
 
-    private static int saveImage(Image i) throws ServerCommunicationError{
-        try{
-            String parameters =  "";
-            String request = rc.serviceUrl + "article/image";
-
-            URL url = new URL(request);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            if(rc.requireSelfSigned)
-                TrustModifier.relaxHostChecking(connection);
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            connection.setInstanceFollowRedirects(false);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type","application/json; charset=UTF-8");
-            connection.setRequestProperty("Authorization", getAuthTokenHeader());
-            connection.setRequestProperty("charset", "utf-8");
-            connection.setUseCaches (false);
-
-            ServiceCallUtils.writeJSONParams(connection, i.toJSON());
-
-            int HttpResult =connection.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK){
-                String res = parseHttpStreamResult(connection);
-                //Logger.log (Logger.INFO, res);
-                // get id from status ok when saved
-                int id = ServiceCallUtils.readRestResultFromInsert(res);
-                Logger.log(Logger.INFO, "Object image saved with id:" + id);
-                return id;
-            }else{
-                throw new ServerCommunicationError(connection.getResponseMessage());
-            }
-        } catch (Exception e) {
-            Logger.log(Logger.ERROR,"Saving image ["+i+"] : " + e.getClass() + " ( "+e.getMessage() + ")");
-            throw new ServerCommunicationError(e.getClass() + " ( "+e.getMessage() + ")");
-        }
-    }
-
-    private static void deleteImage(int idArticle) throws ServerCommunicationError{
-        try{
-            String parameters =  "";
-            String request = rc.serviceUrl + "image/" + idArticle;
-
-            URL url = new URL(request);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            if(rc.requireSelfSigned)
-                TrustModifier.relaxHostChecking(connection);
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            connection.setInstanceFollowRedirects(false);
-            connection.setRequestMethod("DELETE");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            connection.setRequestProperty("Authorization", getAuthTokenHeader());
-            connection.setRequestProperty("charset", "utf-8");
-            connection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
-            connection.setUseCaches (false);
-
-            int HttpResult =connection.getResponseCode();
-            if(HttpResult ==HttpURLConnection.HTTP_OK || HttpResult ==HttpURLConnection.HTTP_NO_CONTENT){
-                Logger.log (Logger.INFO,"Image of article (id:"+idArticle+") deleted with status "+HttpResult+":"+parseHttpStreamResult(connection));
-            }else{
-                throw new ServerCommunicationError(connection.getResponseMessage());
-            }
-        } catch (Exception e) {
-            Logger.log (Logger.ERROR, "Deleting image of article (id:"+idArticle+") : " + e.getClass() + " ( "+e.getMessage() + ")");
-            throw new ServerCommunicationError(e.getClass() + " ( "+e.getMessage() + ")");
-        }
-    }
-
     //Function to check new articles on the server
     public static List<Article> getUpdates(String date) throws ServerCommunicationError {
 
-        List<Article> result = new ArrayList<Article>();
+        List<Article> result = new ArrayList<>();
         try {
             String parameters = "";
             String request = rc.serviceUrl + "articlesFrom/" + date;
 
             URL url = new URL(request);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            if (rc.requireSelfSigned)
-                TrustModifier.relaxHostChecking(connection);
-            //connection.setDoOutput(true);
-            //connection.setDoInput(false);
+            if (rc.requireSelfSigned) TrustModifier.relaxHostChecking(connection);
             connection.setInstanceFollowRedirects(false);
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            connection.setRequestProperty("Authorization", getAuthTokenHeader());
-            connection.setRequestProperty("charset", "utf-8");
-            connection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
+            connection.setRequestProperty(CONTENTTYPE, URLENCODED);
+            connection.setRequestProperty(AUTHORIZATION, getAuthTokenHeader());
+            connection.setRequestProperty(CHARSET, UTF8);
+            connection.setRequestProperty(CONTENTLENGTH, "" + Integer.toString(parameters.getBytes().length));
             connection.setUseCaches(false);
 
-            int HttpResult = connection.getResponseCode();
-            if (HttpResult == HttpURLConnection.HTTP_OK) {
+            int httpResult = connection.getResponseCode();
+            if (httpResult == HttpURLConnection.HTTP_OK) {
                 String res = parseHttpStreamResult(connection);
                 List<JSONObject> objects = ServiceCallUtils.readRestResultFromList(res);
                 for (JSONObject jsonObject : objects) {
