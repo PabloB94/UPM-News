@@ -2,10 +2,15 @@ package es.upm.etsiinf.upmnews;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +29,9 @@ import java.util.Properties;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import es.upm.etsiinf.upmnews.model.Article;
+import es.upm.etsiinf.upmnews.utils.NotificationHelper;
+import es.upm.etsiinf.upmnews.utils.NotificationJobService;
+
 import es.upm.etsiinf.upmnews.utils.AdaptadorListaArticulos;
 import es.upm.etsiinf.upmnews.utils.async.LoadArticlesTask;
 import es.upm.etsiinf.upmnews.utils.async.LoginTask;
@@ -54,7 +62,23 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         prop.setProperty("service_url","https://sanger.dia.fi.upm.es/pmd-task/");
         prop.setProperty("require_self_signed_cert","TRUE");
         ModelManager.configureConnection(prop);
+        refresh();
+        scheduleNotifications();
 
+    }
+
+    private void scheduleNotifications(){
+        ComponentName serviceComponent = new ComponentName(context, NotificationJobService.class);
+        JobInfo.Builder builder = new JobInfo.Builder(0, serviceComponent);
+        builder.setMinimumLatency(1*60000);
+        builder.setOverrideDeadline(2*60000);//10 mins de intervalo
+        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
+        builder.setPersisted(true);
+        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
+        jobScheduler.schedule(builder.build());
+        Log.w("Notifications ","Created");
+        //Configure the notifications
+        NotificationHelper help = new NotificationHelper(this);
     }
 
     @Override
