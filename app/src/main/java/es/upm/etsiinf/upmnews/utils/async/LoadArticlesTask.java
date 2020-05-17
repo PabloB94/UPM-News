@@ -16,40 +16,40 @@ import es.upm.etsiinf.upmnews.R;
 import es.upm.etsiinf.upmnews.model.Article;
 import es.upm.etsiinf.upmnews.utils.AdaptadorListaArticulos;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
-import es.upm.etsiinf.upmnews.utils.network.exceptions.AuthenticationError;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
 public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     
 	private static final String TAG = "LoadArticlesTask";
 
-
-
+	//calling contexts of the app to perform callbacks
     public AsyncResponse delegate = null;
     private MainActivity context;
+    //variable to control visibility of special buttons
     public Boolean loggedin = false;
+    //Local list of articles
     public List<Article> listaArticulos;
+    //adapter of the Articles List
     public AdaptadorListaArticulos adaptador;
+    //position during scroll to load more articles when end is reached
     Parcelable state = null;
+    //reference to the Articles List of the mainScreen
     ListView listaArticulosView ;
 
+    //Constructor of the async task
     public LoadArticlesTask(MainActivity context){
         this.context = context;
     }
 
 
+    //Async method executed to perform the login
     @Override
     protected List<Article> doInBackground(Void... voids) {
         List<Article> res = null;
 
-        //If connection has been successful
-
-
         try {
-            //AQUI HABRIA QUE EXTRAER DE LA STORED  EL USER Y LA PASSWORD Y COMPROBAR SI ES NULL O NO
-            String strIdUser = "";
-            String strApiKey = "";
-            String strIdAuthUser = "";
-
+            String strIdUser;
+            String strApiKey ;
+            String strIdAuthUser;
 
            if (!ModelManager.isConnected()){
                 SharedPreferences preferencia = context.getSharedPreferences("user_info",context.MODE_PRIVATE);
@@ -66,14 +66,13 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
                loggedin = true;
            }
             res = ModelManager.getArticles(30, context.offsetL);
-
         } catch (ServerCommunicationError e) {
             Log.e(TAG,e.getMessage());
         }
-
         return res;
     }
 
+    //Async method executed when task finished, loading the list of articles into the mainScreen with the scroller listener and configuring the list adapter
     @Override
     public void onPostExecute(List<Article> res){
         listaArticulosView  = context.findViewById(R.id.listaArticulos);
@@ -105,6 +104,7 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
             context.findViewById(R.id.loginButton).setVisibility(View.GONE);
             context.findViewById(R.id.newArticleButton).setVisibility(View.VISIBLE);
         }
+        //Scroll Listener to load more Articles
         listaArticulosView.setOnScrollListener(new AbsListView.OnScrollListener(){
             private int lastFirstVisibleItem;
             @Override
