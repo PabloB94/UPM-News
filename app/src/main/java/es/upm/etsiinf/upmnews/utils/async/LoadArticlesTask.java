@@ -19,6 +19,9 @@ import es.upm.etsiinf.upmnews.utils.AdaptadorListaArticulos;
 import es.upm.etsiinf.upmnews.utils.network.ModelManager;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.AuthenticationError;
 import es.upm.etsiinf.upmnews.utils.network.exceptions.ServerCommunicationError;
+
+import static android.view.View.GONE;
+
 public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
     
 	private static final String TAG = "LoadArticlesTask";
@@ -96,6 +99,7 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
         adaptador = new AdaptadorListaArticulos(context,res,loggedin);
         adaptador.filter(context.getTopic());
         listaArticulosView.setAdapter(adaptador);
+        context.findViewById(R.id.progress_bar_layout).setVisibility(GONE);
 
         if(tamanioAntiguo != 0 && tamanioAntiguo != listaArticulos.size()){
             context.offsetL = res.size();
@@ -115,17 +119,11 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if(lastFirstVisibleItem<firstVisibleItem){
                     if(firstVisibleItem + visibleItemCount >= totalItemCount){
-                        //context.offsetL = firstVisibleItem + visibleItemCount;
-
-                        int duration = Toast.LENGTH_SHORT;
-                        CharSequence text = "Loading more articles...";
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
-
                         LoadArticlesTask task = new LoadArticlesTask(context);
                         task.delegate = context;
                         task.listaArticulos = listaArticulos;
                         task.state = listaArticulosView.onSaveInstanceState();
+                        context.findViewById(R.id.progress_bar_layout).setVisibility(View.VISIBLE);
                         task.execute();
 
                     }
@@ -140,6 +138,8 @@ public class LoadArticlesTask extends AsyncTask<Void, Void, List<Article>> {
         }
         else{
             if(loggedin) context.findViewById(R.id.newArticleButton).setVisibility(View.GONE);
+            context.findViewById(R.id.progress_bar_layout).setVisibility(GONE);
+
         }
 
 
